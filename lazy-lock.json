@@ -15,7 +15,7 @@
   "flash.nvim": { "branch": "main", "commit": "34c7be146a91fec3555c33fe89c7d643f6ef5cf1" },
   "gitsigns.nvim": { "branch": "main", "commit": "f4928ba14eb6c667786ac7d69927f6aee6719f1e" },
   "indent-blankline.nvim": { "branch": "master", "commit": "65e20ab94a26d0e14acac5049b8641336819dfc7" },
-  "latex.nvim": { "branch": "main", "commit": "bb480bdb8842789778f41786438607f550d540e5" },
+  "latex.nvim": { "branch": "main", "commit": "1a120bd3e565f59a74df8b620a57d601fa3afd96" },
   "lazy.nvim": { "branch": "main", "commit": "839f9e78e78dc935b1188fb16583365991739c51" },
   "lazydev.nvim": { "branch": "main", "commit": "399299ca570aa82c13ee4fb1bd1304ce6baf7f05" },
   "lspsaga.nvim": { "branch": "main", "commit": "6f920cfabddb9b7de5a3a4d0b7cd4f0774ae23e2" },
@@ -51,5 +51,5 @@
   "telescope.nvim": { "branch": "master", "commit": "79552ef8488cb492e0f9d2bf3b4e808f57515e35" },
   "tmux.nvim": { "branch": "main", "commit": "da618e075f42793400c3ee1e59ef3ebada2cb23c" },
   "tokyonight.nvim": { "branch": "main", "commit": "a487cac3113adb1853e3a81060f51d7a391cdea9" },
-  "which-key.nvim": { "branch": "main", "commit": "cc54b75fcbd8703e633f93cb0334fb13e2cfbd7e" }
+  "which-key.nvim": { "branch": "main", "commit": "48cdaaab93a4c85cac8eb271bb48307ed337787f" }
 }
