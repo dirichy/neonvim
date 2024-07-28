@@ -11,6 +11,15 @@ return {
     config = function()
       require("tokyonight").setup({
         on_highlights=function (highlight,color)
+          highlight["@script"]={
+            fg="#4444ff",
+          }
+          highlight["@relationship"]={
+            fg="#abcdef"
+          }
+          highlight["@others"]={
+            fg="#123456"
+          }
           highlight["@mathfont"]={
             fg = "#ff4444"
           }
@@ -37,6 +46,9 @@ return {
           }
           highlight["@none"]={
             fg="#a9b1d6"
+          }
+          highlight["@breaket"]={
+            fg="#bb44ff"
           }
         end
       })

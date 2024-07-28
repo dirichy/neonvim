@@ -12,10 +12,6 @@
   (brack_group_argc)
 ] @variable.parameter
 
-((command_name) @operator
-                (#eq? @operator "\\times")
-                (#set! conceal "x")
-  )
 [
   (operator)
   "="
@@ -73,11 +69,6 @@
   declaration: (curly_group_command_name
     (_) @function))
 
-(label_definition
-  command: _ @function.macro (#set! conceal "≈")
-  name: (curly_group_text
-    (_) @markup.link)
-  )
 
 (label_reference_range
   command: _ @function.macro
@@ -350,12 +341,3 @@
   name: (curly_group_text
     (text) @label))
 
-(text_mode
-  [
-    "\\text"
-    "\\intertext"
-    "\\shortintertext"
-  ] @function 
-  (#set! conceal ""))
-
-("\\item" @punctuation.special (#set! conceal "○"))
