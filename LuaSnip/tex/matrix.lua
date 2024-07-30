@@ -11,7 +11,48 @@ local d = ls.dynamic_node
 local r = ls.restore_node
 local fmta = require("luasnip.extras.fmt").fmta
 local autosnippet = ls.extend_decorator.apply(s, { snippetType = "autosnippet" })
-
+local line_begin = require("luasnip.extras.expand_conditions").line_begin
+local function get_column_in_tblr()
+  local curcol = vim.api.nvim_win_get_cursor(0)[1]
+  local line = ""
+  while curcol > 1 do
+    line = vim.api.nvim_buf_get_lines(0, curcol - 1, curcol, false)[1]
+    if string.match(line, "^\\begin{tblr}") then
+      return tonumber(string.match(line, "%%!column%s*=%s*(.*)$"))
+    end
+    curcol = curcol - 1
+  end
+end
+local generate_oneline = function(col)
+  if not col or col == 0 then
+    return sn(nil, { r(1, "1", i(1)) })
+  end
+  local nodes = {}
+  for j = 1, col - 1 do
+    table.insert(nodes, r(j, tostring(j), i(1)))
+    table.insert(nodes, t(" & "))
+  end
+  table.insert(nodes, r(col, tostring(col), i(1)))
+  table.insert(nodes, t({ "\\\\" }))
+  return sn(nil, nodes)
+end
+-- Generating functions for Matrix/Cases - thanks L3MON4D3!
+---@param str string
+local function count_column(str)
+  if string.find(str, "colspec") then
+    str = string.match(str, "colspec%s*=%s*(%b{})")
+    str = string.match(str, "^{(.*)}$")
+  else
+    local test = string.gsub(str, "%b{}", "")
+    if string.find(test, "=") then
+      return nil
+    end
+  end
+  str = string.gsub(str, [[|]], "")
+  str = string.gsub(str, [=[%b[]]=], "")
+  str = string.gsub(str, [=[%b{}]=], "")
+  return string.len(str)
+end
 -- [
 -- personal imports
 -- ]
