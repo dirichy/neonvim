@@ -124,6 +124,66 @@ M = {
     ),
     { condition = tex.in_math }
   ),
+  s(
+    { trig = ".lt", snippetType = "autosnippet" },
+    fmta(
+      [[
+\begin{tblr}<><><>{<>} %!column = <>
+<>
+<>
+\end{tblr}
+    ]],
+      {
+        f(function(args, snip)
+          return args[1][1] ~= "" and "[" or ""
+        end, { 1 }),
+        i(1),
+        f(function(args, snip)
+          return args[1][1] ~= "" and "]" or ""
+        end, { 1 }),
+        i(2),
+        f(function(args, snip)
+          local col = count_column(args[1][1])
+          return tostring(col)
+        end, { 2 }),
+        d(3, function(args, snip)
+          local col = count_column(args[1][1])
+          return generate_oneline(col)
+        end, { 2 }),
+        i(4),
+      }
+    ),
+    { condition = line_begin }
+  ),
+  s(
+    { trig = "([^%s])", regTrig = true, snippetType = "autosnippet" },
+    fmta(
+      [[
+<><>
+<>
+]],
+      {
+        f(function(_, snip)
+          return snip.captures[1]
+        end),
+        d(1, function()
+          local col = get_column_in_tblr()
+          return generate_oneline(col)
+        end),
+        i(0),
+      }
+    ),
+    {
+      condition = function()
+        if not tex.in_tblr() then
+          return false
+        end
+        local curcol = vim.api.nvim_win_get_cursor(0)[1]
+        local line = vim.api.nvim_buf_get_lines(0, curcol - 1, curcol, false)[1]
+        return string.match(line, "^%s*[^%s]$")
+      end,
+    }
+  ),
 }
 
 return M
