@@ -1,6 +1,6 @@
 return {
-  "nvim-neorg/neorg",
-  lazy=false,
-  version="*",
-  config=true
+	"nvim-neorg/neorg",
+	ft = "norg",
+	version = "*",
+	config = true,
 }

@@ -1,11 +1,12 @@
 local option = vim.opt
 local buffer = vim.b
 local global = vim.g
-
 -- Globol Settings --
-option.sessionoptions = 'buffers,curdir,folds,help,tabpages,winsize,terminal'
-option.foldmethod = 'expr'
-option.foldexpr = 'nvim_treesitter#foldexpr()'
+global.maplocalleader = ","
+option.sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,terminal"
+option.foldmethod = "expr"
+option.foldexpr = "nvim_treesitter#foldexpr()"
+option.foldlevelstart = 99
 option.showmode = false
 option.backspace = { "indent", "eol", "start" }
 option.tabstop = 2
@@ -32,7 +33,7 @@ option.backup = false
 option.updatetime = 50
 option.mouse = "a"
 option.undofile = true
-option.undodir = vim.fn.expand('$HOME/.local/share/nvim/undo')
+option.undodir = vim.fn.expand("$HOME/.local/share/nvim/undo")
 option.exrc = true
 option.wrap = false
 option.splitright = true
@@ -46,16 +47,16 @@ global.mapleader = " "
 -- Key mappings --
 vim.keymap.set("n", "<A-Tab>", "<cmd>bNext<CR>")
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", "<cmd>m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", "<cmd>m '<-2<CR>gv=gv")
 
-vim.keymap.set({ "v", "n" }, "<leader>y", "\"+y")
+vim.keymap.set({ "v", "n" }, "<leader>y", '"+y')
 vim.keymap.set({ "n" }, "<leader>qq", "<cmd>qa<cr>")
 vim.keymap.set("n", "<leader>tt", function()
 	local api = vim.api
 
-	local bnr = vim.fn.bufnr('%')
-	local ns_id = api.nvim_create_namespace('demo')
+	local bnr = vim.fn.bufnr("%")
+	local ns_id = api.nvim_create_namespace("demo")
 
 	local line_num = 5
 	local col_num = 5
@@ -65,11 +66,11 @@ vim.keymap.set("n", "<leader>tt", function()
 		id = 1,
 		-- virt_text = { { [[sss  aaa]], "IncSearch" } },
 		-- virt_text_pos = 'eol',
-    virt_lines={
-      {{"    ||||","IncSearch"}},
-      {{"    || |","IncSearch"}},
-      {{"    |  |","IncSearch"}}
-    },
+		virt_lines = {
+			{ { "    ||||", "IncSearch" } },
+			{ { "    || |", "IncSearch" } },
+			{ { "    |  |", "IncSearch" } },
+		},
 		virt_text_win_col = 10,
 	}
 

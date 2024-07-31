@@ -15,7 +15,7 @@ local autosnippet = ls.extend_decorator.apply(s, { snippetType = "autosnippet" }
 -- [
 -- personal imports
 -- ]
-local tex = require("latex.conditions")
+local tex =require("latex.conditions.luasnip")
 
 -- Generating functions for Matrix/Cases - thanks L3MON4D3!
 local generate_matrix = function(args, snip)

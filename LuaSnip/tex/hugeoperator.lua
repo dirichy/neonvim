@@ -11,7 +11,7 @@ local fmta = require("luasnip.extras.fmt").fmta
 -- [
 -- personal imports
 -- ]
-local tex = require("latex.conditions")
+local tex =require("latex.conditions.luasnip")
 local Operators = {
   band = "bigwedge",
   bcap = "bigcap",

@@ -1,105 +1,107 @@
 return {
-  "L3MON4D3/LuaSnip",
-  opts=function ()
-    local types = require("luasnip.util.types")
-    local lazy_table = require("luasnip.util.lazy_table")
+	"L3MON4D3/LuaSnip",
+	event = "InsertEnter",
+	build = "make install_jsregexp",
+	opts = function()
+		local types = require("luasnip.util.types")
+		local lazy_table = require("luasnip.util.lazy_table")
 
-    local ft_functions = require("luasnip.extras.filetype_functions")
+		local ft_functions = require("luasnip.extras.filetype_functions")
 
-    -- Inserts a insert(1) before all other nodes, decreases node.pos's as indexing is "wrong".
-    local function modify_nodes(snip)
-      for i = #snip.nodes, 1, -1 do
-        snip.nodes[i + 1] = snip.nodes[i]
-        local node = snip.nodes[i + 1]
-        if node.pos then
-          node.pos = node.pos + 1
-        end
-      end
+		-- Inserts a insert(1) before all other nodes, decreases node.pos's as indexing is "wrong".
+		local function modify_nodes(snip)
+			for i = #snip.nodes, 1, -1 do
+				snip.nodes[i + 1] = snip.nodes[i]
+				local node = snip.nodes[i + 1]
+				if node.pos then
+					node.pos = node.pos + 1
+				end
+			end
 
-      local iNode = require("luasnip.nodes.insertNode")
-      snip.nodes[1] = iNode.I(1)
-    end
+			local iNode = require("luasnip.nodes.insertNode")
+			snip.nodes[1] = iNode.I(1)
+		end
 
-    local lazy_snip_env = {
-      s = function()
-        return require("luasnip.nodes.snippet").S
-      end,
-      sn = function()
-        return require("luasnip.nodes.snippet").SN
-      end,
-      isn = function()
-        return require("luasnip.nodes.snippet").ISN
-      end,
-      t = function()
-        return require("luasnip.nodes.textNode").T
-      end,
-      i = function()
-        return require("luasnip.nodes.insertNode").I
-      end,
-      f = function()
-        return require("luasnip.nodes.functionNode").F
-      end,
-      c = function()
-        return require("luasnip.nodes.choiceNode").C
-      end,
-      d = function()
-        return require("luasnip.nodes.dynamicNode").D
-      end,
-      r = function()
-        return require("luasnip.nodes.restoreNode").R
-      end,
-      events = function()
-        return require("luasnip.util.events")
-      end,
-      k = function()
-        return require("luasnip.nodes.key_indexer").new_key
-      end,
-      ai = function()
-        return require("luasnip.nodes.absolute_indexer")
-      end,
-      extras = function()
-        return require("luasnip.extras")
-      end,
-      l = function()
-        return require("luasnip.extras").lambda
-      end,
-      rep = function()
-        return require("luasnip.extras").rep
-      end,
-      p = function()
-        return require("luasnip.extras").partial
-      end,
-      m = function()
-        return require("luasnip.extras").match
-      end,
-      n = function()
-        return require("luasnip.extras").nonempty
-      end,
-      dl = function()
-        return require("luasnip.extras").dynamic_lambda
-      end,
-      fmt = function()
-        return require("luasnip.extras.fmt").fmt
-      end,
-      fmta = function()
-        return require("luasnip.extras.fmt").fmta
-      end,
-      conds = function()
-        return require("luasnip.extras.expand_conditions")
-      end,
-      postfix = function()
-        return require("luasnip.extras.postfix").postfix
-      end,
-      types = function()
-        return require("luasnip.util.types")
-      end,
-      parse = function()
-        return require("luasnip.util.parser").parse_snippet
-      end,
-      ms = function()
-        return require("luasnip.nodes.multiSnippet").new_multisnippet
-      end,
-    }
+		local lazy_snip_env = {
+			s = function()
+				return require("luasnip.nodes.snippet").S
+			end,
+			sn = function()
+				return require("luasnip.nodes.snippet").SN
+			end,
+			isn = function()
+				return require("luasnip.nodes.snippet").ISN
+			end,
+			t = function()
+				return require("luasnip.nodes.textNode").T
+			end,
+			i = function()
+				return require("luasnip.nodes.insertNode").I
+			end,
+			f = function()
+				return require("luasnip.nodes.functionNode").F
+			end,
+			c = function()
+				return require("luasnip.nodes.choiceNode").C
+			end,
+			d = function()
+				return require("luasnip.nodes.dynamicNode").D
+			end,
+			r = function()
+				return require("luasnip.nodes.restoreNode").R
+			end,
+			events = function()
+				return require("luasnip.util.events")
+			end,
+			k = function()
+				return require("luasnip.nodes.key_indexer").new_key
+			end,
+			ai = function()
+				return require("luasnip.nodes.absolute_indexer")
+			end,
+			extras = function()
+				return require("luasnip.extras")
+			end,
+			l = function()
+				return require("luasnip.extras").lambda
+			end,
+			rep = function()
+				return require("luasnip.extras").rep
+			end,
+			p = function()
+				return require("luasnip.extras").partial
+			end,
+			m = function()
+				return require("luasnip.extras").match
+			end,
+			n = function()
+				return require("luasnip.extras").nonempty
+			end,
+			dl = function()
+				return require("luasnip.extras").dynamic_lambda
+			end,
+			fmt = function()
+				return require("luasnip.extras.fmt").fmt
+			end,
+			fmta = function()
+				return require("luasnip.extras.fmt").fmta
+			end,
+			conds = function()
+				return require("luasnip.extras.expand_conditions")
+			end,
+			postfix = function()
+				return require("luasnip.extras.postfix").postfix
+			end,
+			types = function()
+				return require("luasnip.util.types")
+			end,
+			parse = function()
+				return require("luasnip.util.parser").parse_snippet
+			end,
+			ms = function()
+				return require("luasnip.nodes.multiSnippet").new_multisnippet
+			end,
+		}
 
     -- stylua: ignore
     return {
@@ -219,9 +221,9 @@ return {
       snip_env = lazy_table({}, lazy_snip_env),
       loaders_store_source = false,
     }
-  end,
-  config = function (_,opts)
-    require("luasnip").setup(opts)
-    require("luasnip.loaders.from_lua").load({ paths = {"~/.config/nvim/LuaSnip"} })
-  end
+	end,
+	config = function(_, opts)
+		require("luasnip").setup(opts)
+		require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/LuaSnip" } })
+	end,
 }

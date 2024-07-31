@@ -12,7 +12,7 @@ local fmta = require("luasnip.extras.fmt").fmta
 -- [
 -- personal imports
 -- ]
-local tex = require("latex.conditions")
+local tex =require("latex.conditions.luasnip")
 local text_line_begin_leader = "%."
 local envs = {
   pf = { name = "proof", condition = 2 },
