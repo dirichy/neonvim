@@ -22,14 +22,7 @@ return {
 		-- end,
 		config = function()
 			local servers = {
-				lua_ls = {
-					settings = {
-						Lua = {
-							workspace = { checkThirdParty = false },
-							telemetry = { enable = false },
-						},
-					},
-				},
+				lua_ls = {},
 				pyright = {},
 				jsonls = {},
 				marksman = {},
