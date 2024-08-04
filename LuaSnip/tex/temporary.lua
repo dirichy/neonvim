@@ -4,6 +4,17 @@ local t = ls.text_node
 local i = ls.insert_node
 local fmta = require("luasnip.extras.fmt").fmta
 
-local tex =require("latex.conditions.luasnip")
+local tex = require("latex.conditions.luasnip")
 
-return {}
+return {
+	s(
+		{ trig = "test", snippetType = "autosnippet" },
+		fmta("\\<>{<>}", {
+			i(1),
+			f(function()
+				return vim.fn.input("input something")
+			end),
+		}),
+		{ condition = tex.in_math }
+	),
+}
