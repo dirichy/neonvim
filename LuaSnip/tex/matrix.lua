@@ -216,7 +216,7 @@ M = {
     ),
     {
       condition = function()
-        if not tex.in_tblr() then
+        if not tex.in_table() then
           return false
         end
         local curcol = vim.api.nvim_win_get_cursor(0)[1]
