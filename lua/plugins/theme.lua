@@ -2,12 +2,7 @@ return {
 	{
 		"folke/tokyonight.nvim",
 		priority = 1000,
-		dependencies = {
-			"nvim-lualine/lualine.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"utilyre/barbecue.nvim",
-			"SmiteshP/nvim-navic",
-		},
+		dependencies = {},
 		config = function()
 			require("tokyonight").setup({
 				on_highlights = function(highlight, color)
@@ -69,14 +64,59 @@ return {
 				end,
 			})
 			vim.cmd([[colorscheme tokyonight-storm]])
-			require("lualine").setup({
+		end,
+	},
+	{
+		"nvim-lualine/lualine.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"folke/tokyonight.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		opts = function()
+			vim.o.laststatus = vim.g.lualine_laststatue
+			return {
 				options = {
+					globalstatus = vim.o.laststatus == 3,
 					theme = "tokyonight",
+					disabled_filetypes = { statusline = { "dashboard", "ministarter" } },
 				},
-			})
-			require("barbecue").setup({
-				theme = "tokyonight",
-			})
+				extensions = { "neo-tree", "lazy" },
+			}
+		end,
+	},
+	{
+		"utilyre/barbecue.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"folke/tokyonight.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		opts = {
+			theme = "tokyonight",
+		},
+	},
+	{
+		"SmiteshP/nvim-navic",
+		event = "VeryLazy",
+		dependencies = {
+			"folke/tokyonight.nvim",
+			"nvim-tree/nvim-web-devicons",
+		},
+		config = true,
+	},
+	{
+		"uga-rosa/ccc.nvim",
+		keys = {
+			{ "<leader>oc", "<cmd>CccPick<cr>", desc = "Open Color Picker" },
+		},
+		config = true,
+	},
+	{
+		"norcalli/nvim-terminal.lua",
+		ft = "terminal",
+		config = function()
+			require("terminal").setup({})
 		end,
 	},
 }

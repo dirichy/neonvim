@@ -58,8 +58,8 @@ return {
 				nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
 				nmap("<leader>rn", "<cmd>Lspsaga rename ++project<cr>", "[R]e[n]ame")
 				nmap("<leader>ca", "<cmd>Lspsaga code_action<CR>", "[C]ode [A]ction")
-				nmap("<leader>da", require("telescope.builtin").diagnostics, "[D]i[A]gnostics")
-				nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+				nmap("<leader>fd", require("telescope.builtin").diagnostics, "Find Diagnostics")
+				nmap("<leader>fr", require("telescope.builtin").lsp_references, "Find References")
 				-- nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
 			end
 			require("neoconf").setup()

@@ -1,7 +1,7 @@
 return {
 	{
 		"dirichy/latex.nvim",
-		ft = "tex",
+		ft = { "tex", "markdown", "norg" },
 		keys = {
 			{
 				"<leader>tb",

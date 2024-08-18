@@ -1,6 +1,7 @@
 return {
 	{
 		"akinsho/bufferline.nvim",
+		lazy = false,
 		keys = {
 			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
 			{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
@@ -163,7 +164,8 @@ return {
 	},
 	{
 		"nvimdev/dashboard-nvim",
-		lazy = false, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
+		lazy = #vim.fn.argv() > 0, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
+		cmd = "Dashboard",
 		opts = function()
 			local logo = [[
 ██╗      █████╗ ████████╗███████╗██╗  ██╗
@@ -202,7 +204,7 @@ return {
             { action = 'lua require("telescope.builtin").live_grep()', desc = " Live Grip", icon = " ", key = "g" },
             { action = 'lua require("telescope.builtin").find_files({cwd="~/.config/nvim"})', desc = " Config", icon = " ", key = "c" },
             { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
-            {action='Leet',desc=" Leet Code",icon="󰪚",key="e"},
+            {action='Leet',desc=" Leet Code",icon="󰪚 ",key="e"},
             -- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
             { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
             { action = "qa", desc = " Quit", icon = " ", key = "q" },

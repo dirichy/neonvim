@@ -8,9 +8,9 @@ return {
 		"hrsh7th/cmp-cmdline",
 		{
 			"saadparwaiz1/cmp_luasnip",
-			dependencies = {
-				"L3MON4D3/LuaSnip",
-			},
+			-- dependencies = {
+			-- 	"L3MON4D3/LuaSnip",
+			-- },
 		},
 	},
 	config = function()
@@ -26,7 +26,7 @@ return {
 		cmp.setup({
 			snippet = {
 				expand = function(args)
-					require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+					luasnip.lsp_expand(args.body) -- For `luasnip` users.
 				end,
 			},
 			sources = cmp.config.sources({

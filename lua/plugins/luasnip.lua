@@ -215,7 +215,8 @@ return {
       load_ft_func=ft_functions.extend_load_ft({
         markdown = {"lua", "json"},
         html = {"javascript"},
-        latex = {"lua"}
+        latex = {"lua"},
+        norg = {"latex","tex"}
       }),
       -- globals injected into luasnippet-files.
       snip_env = lazy_table({}, lazy_snip_env),

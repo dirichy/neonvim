@@ -15,7 +15,7 @@ return {
 		-- setting the keybinding for LazyGit with 'keys' is recommended in
 		-- order to load the plugin when the command is run for the first time
 		keys = {
-			{ "<leader>og", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+			{ "<leader>og", "<cmd>LazyGit<cr>", desc = "Open LazyGit" },
 		},
 		config = function()
 			vim.g.lazygit_floating_window_winblend = 0 -- transparency of floating window

@@ -19,17 +19,20 @@ return {
 		lazy = true,
 		event = "ExitPre",
 		keys = {
-			{ "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]] },
-			{ "<leader>ql", [[<cmd>lua require("persistence").load({ last = true})<cr>]] },
-			{ "<leader>qd", [[<cmd>lua require("persistence").stop()<cr>]] },
-			{ "<leader>qS", [[<cmd>lua require("persistence").select()<cr>]] },
+			{ "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], desc = "Load Session" },
+			{ "<leader>ql", [[<cmd>lua require("persistence").load({ last = true})<cr>]], desc = "Load Last Session" },
+			{
+				"<leader>qd",
+				[[<cmd>lua require("persistence").stop()<cr><cmd>qa<cr>]],
+				desc = "Quit and not save this session",
+			},
+			{ "<leader>qS", [[<cmd>lua require("persistence").select()<cr>]], desc = "Select Load Session" },
 		},
 		config = true,
 	},
 	{
-		"echasnovski/mini.pairs",
+		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		opts = {},
 		keys = {
 			{
 				"<leader>up",
@@ -45,6 +48,9 @@ return {
 				desc = "Toggle auto pairs",
 			},
 		},
+		config = function()
+			require("nvim-autopairs").setup({})
+		end,
 	},
 	{
 		"ethanholz/nvim-lastplace",
@@ -52,62 +58,64 @@ return {
 	},
 	{
 		"rainzm/flash-zh.nvim",
-		event = "VeryLazy",
+		-- keys = { "s", "S", "r", "R", "/", "f", "F" },
 		dependencies = "folke/flash.nvim",
 		lazy = true,
+		event = "VeryLazy",
+		keys = {
+			{
+				"s",
+				mode = { "n", "x", "o" },
+				function()
+					if vim.g.curlang == "zh" then
+						require("flash-zh").jump({
+							chinese_only = false,
+						})
+					else
+						require("flash").jump()
+					end
+				end,
+				desc = "Flash between Chinese",
+			},
+			{
+				"S",
+				mode = { "n", "o", "x" },
+				function()
+					require("flash").treesitter()
+				end,
+				desc = "Flash Treesitter",
+			},
+			{
+				"r",
+				mode = "o",
+				function()
+					require("flash").remote()
+				end,
+				desc = "Remote Flash",
+			},
+			{
+				"R",
+				mode = { "o", "x" },
+				function()
+					require("flash").treesitter_search()
+				end,
+				desc = "Treesitter Search",
+			},
+			{
+				"<c-s>",
+				mode = { "c" },
+				function()
+					require("flash").toggle()
+				end,
+				desc = "Toggle Flash Search",
+			},
+		},
 		config = function()
-			local map = vim.keymap.set
-			local keys = {
-				{
-					"s",
-					mode = { "n", "x", "o" },
-					function()
-						if vim.g.curlang == "zh" then
-							require("flash-zh").jump({
-								chinese_only = false,
-							})
-						else
-							require("flash").jump()
-						end
-					end,
-					desc = "Flash between Chinese",
-				},
-				{
-					"S",
-					mode = { "n", "o", "x" },
-					function()
-						require("flash").treesitter()
-					end,
-					desc = "Flash Treesitter",
-				},
-				{
-					"r",
-					mode = "o",
-					function()
-						require("flash").remote()
-					end,
-					desc = "Remote Flash",
-				},
-				{
-					"R",
-					mode = { "o", "x" },
-					function()
-						require("flash").treesitter_search()
-					end,
-					desc = "Treesitter Search",
-				},
-				{
-					"<c-s>",
-					mode = { "c" },
-					function()
-						require("flash").toggle()
-					end,
-					desc = "Toggle Flash Search",
-				},
-			}
-			for _, key in ipairs(keys) do
-				map(key.mode, key[1], key[2], { desc = key.desc })
-			end
+			require("flash").setup()
+			-- local map = vim.keymap.set
+			-- for _, key in ipairs(keys) do
+			-- 	map(key.mode, key[1], key[2], { desc = key.desc })
+			-- end
 		end,
 	},
 	-- {
@@ -911,13 +919,20 @@ return {
 				{ "<leader>q", group = "Session" },
 				{ "<leader>g", group = "Goto" },
 				{ "<leader>ot", "<cmd>terminal<cr>", desc = "Open Terminal" },
+				{ "<leader>ol", "<cmd>Lazy<cr>", desc = "Open Lazy" },
+				{ "<leader>om", "<cmd>Mason<cr>", desc = "Open Mason(for LS installP)" },
 			})
 		end,
 	},
 	{
 		"echasnovski/mini.ai",
 		event = "VeryLazy",
-		config = true,
+		config = function()
+			local ai = require("mini.ai")
+			ai.setup({
+				custom_textobjects = {},
+			})
+		end,
 	},
 	{
 		"echasnovski/mini.comment",

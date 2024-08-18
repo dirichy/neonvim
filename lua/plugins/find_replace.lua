@@ -60,8 +60,10 @@ return {
 	{
 		"MagicDuck/grug-far.nvim",
 		cmd = { "GrugFar" },
+		keys = {
+			{ "<leader>or", "<cmd>GrugFar<cr>", desc = "Open Replace Window" },
+		},
 		config = function()
-			vim.g.maplocalleader = ","
 			require("grug-far").setup({})
 		end,
 	},
