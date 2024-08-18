@@ -12,6 +12,7 @@ local r = ls.restore_node
 local fmta = require("luasnip.extras.fmt").fmta
 local autosnippet = ls.extend_decorator.apply(s, { snippetType = "autosnippet" })
 local line_begin = require("luasnip.extras.expand_conditions").line_begin
+local latex=require("latex.conditions.luasnip")
 local function get_column_in_tblr()
   local curcol = vim.api.nvim_win_get_cursor(0)[1]
   local line = ""
@@ -166,7 +167,7 @@ M = {
     { condition = tex.in_math }
   ),
   s(
-    { trig = ".lt", snippetType = "autosnippet" },
+    { trig = "tblr", snippetType = "autosnippet" },
     fmta(
       [[
 \begin{tblr}<><><>{<>} %!column = <>
@@ -216,7 +217,7 @@ M = {
     ),
     {
       condition = function()
-        if not tex.in_tblr() then
+        if not latex.in_table() then
           return false
         end
         local curcol = vim.api.nvim_win_get_cursor(0)[1]
