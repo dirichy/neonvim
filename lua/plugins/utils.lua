@@ -882,6 +882,11 @@ return {
 						color = "#006400",
 						name = "Aux",
 					},
+          ["norg"] = {
+            icon = "",
+            color = "#b34fee",
+            name="Norg",
+          },
 				},
 			})
 		end,
