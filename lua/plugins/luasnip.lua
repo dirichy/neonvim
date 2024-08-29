@@ -213,7 +213,7 @@ return {
       -- fn(bufnr) -> string[] (filetypes).
       -- load_ft_func = ft_functions.from_filetype_load,
       load_ft_func=ft_functions.extend_load_ft({
-        markdown = {"lua", "json"},
+        markdown = {"lua","tex" },
         html = {"javascript"},
         latex = {"lua"},
         norg = {"latex","tex"}

@@ -49,7 +49,17 @@ return {
 			},
 		},
 		config = function()
-			require("nvim-autopairs").setup({})
+			local npairs = require("nvim-autopairs")
+			local Rule = require("nvim-autopairs.rule")
+			npairs.setup({
+				check_ts = true,
+				ts_config = {
+					tex = { "inline_formula", "math_environment", "displayed_equation" },
+				},
+			})
+			npairs.add_rules({
+				Rule("``", "''", { "tex", "latex" }),
+			})
 		end,
 	},
 	{
