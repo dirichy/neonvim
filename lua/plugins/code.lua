@@ -22,6 +22,7 @@ return {
 					-- Conform will run the first available formatter
 					javascript = { "prettierd", "prettier", stop_after_first = true },
 					tex = { "latexindent" },
+					c = { "clang-format" },
 				},
 			})
 			vim.api.nvim_create_autocmd("BufWritePre", {
@@ -39,5 +40,10 @@ return {
 		config = function()
 			require("nvim-surround").setup({})
 		end,
+	},
+	{
+		"folke/zen-mode.nvim",
+		commands = "ZenMode",
+		config = true,
 	},
 }

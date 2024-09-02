@@ -1,6 +1,9 @@
 return {
 	{
 		"neovim/nvim-lspconfig",
+		keys = {
+			{ "<leader>om", "<cmd>Mason<cr>", desc = "Open Mason(LSP install)" },
+		},
 		cmd = { "Mason", "Neoconf" },
 		event = { "BufReadPost", "BufNewFile" },
 		dependencies = {
@@ -94,6 +97,98 @@ return {
 				--     }
 				--   })
 				-- end,
+				["ltex"] = function()
+					require("lspconfig")["ltex"].setup({
+						on_attach = function(_, bufer)
+							on_attach(_, bufer)
+							require("ltex_extra").setup({
+								-- capabilities = capabilities,
+								-- on_attach = on_attach,
+								use_spellfile = false,
+								filetypes = { "latex", "tex", "bib", "markdown", "gitcommit", "text" },
+								settings = {
+									ltex = {
+										enabled = { "latex", "tex", "bib", "markdown" },
+										diagnosticSeverity = "information",
+										completionEnabled = true,
+										checkFrequency = "save",
+										sentenceCacheSize = 2000,
+										additionalRules = {
+											enablePickyRules = true,
+											motherTongue = "zh-CN",
+										},
+										["ltex-ls"] = {
+											logLevel = "finest",
+										},
+										-- dictionary = (function()
+										-- 	-- For dictionary, search for files in the runtime to have
+										-- 	-- and include them as externals the format for them is
+										-- 	-- dict/{LANG}.txt
+										-- 	--
+										-- 	-- Also add dict/default.txt to all of them
+										-- 	local files = {}
+										-- 	for _, file in ipairs(vim.api.nvim_get_runtime_file("dict/*", true)) do
+										-- 		local lang = vim.fn.fnamemodify(file, ":t:r")
+										-- 		local fullpath = vim.fs.normalize(file, ":p")
+										-- 		files[lang] = { ":" .. fullpath }
+										-- 	end
+										--
+										-- 	if files.default then
+										-- 		for lang, _ in pairs(files) do
+										-- 			if lang ~= "default" then
+										-- 				vim.list_extend(files[lang], files.default)
+										-- 			end
+										-- 		end
+										-- 		files.default = nil
+										-- 	end
+										-- 	return files
+										-- end)(),
+									},
+								},
+							})
+						end,
+						capabilities = capabilities,
+						settings = {
+							ltex = {
+								enabled = { "latex", "tex", "bib", "markdown" },
+								diagnosticSeverity = "information",
+								completionEnabled = true,
+								checkFrequency = "save",
+								sentenceCacheSize = 2000,
+								additionalRules = {
+									enablePickyRules = true,
+									motherTongue = "zh-CN",
+								},
+								["ltex-ls"] = {
+									logLevel = "finest",
+								},
+								-- dictionary = (function()
+								-- 	-- For dictionary, search for files in the runtime to have
+								-- 	-- and include them as externals the format for them is
+								-- 	-- dict/{LANG}.txt
+								-- 	--
+								-- 	-- Also add dict/default.txt to all of them
+								-- 	local files = {}
+								-- 	for _, file in ipairs(vim.api.nvim_get_runtime_file("dict/*", true)) do
+								-- 		local lang = vim.fn.fnamemodify(file, ":t:r")
+								-- 		local fullpath = vim.fs.normalize(file, ":p")
+								-- 		files[lang] = { ":" .. fullpath }
+								-- 	end
+								--
+								-- 	if files.default then
+								-- 		for lang, _ in pairs(files) do
+								-- 			if lang ~= "default" then
+								-- 				vim.list_extend(files[lang], files.default)
+								-- 			end
+								-- 		end
+								-- 		files.default = nil
+								-- 	end
+								-- 	return files
+								-- end)(),
+							},
+						},
+					})
+				end,
 				["rust_analyzer"] = function()
 					require("rust-tools").setup({ on_attach = on_attach, capabilities = capabilities })
 				end,

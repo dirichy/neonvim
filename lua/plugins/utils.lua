@@ -19,7 +19,14 @@ return {
 		lazy = true,
 		event = "ExitPre",
 		keys = {
-			{ "<leader>qs", [[<cmd>lua require("persistence").load()<cr>]], desc = "Load Session" },
+			{
+				"<leader>qs",
+				function()
+					vim.cmd([[Neotree close]])
+					vim.cmd([[lua require("persistence").load() ]])
+				end,
+				desc = "Load Session",
+			},
 			{ "<leader>ql", [[<cmd>lua require("persistence").load({ last = true})<cr>]], desc = "Load Last Session" },
 			{
 				"<leader>qd",
@@ -37,13 +44,7 @@ return {
 			{
 				"<leader>up",
 				function()
-					local Util = require("lazy.core.util")
-					vim.g.minipairs_disable = not vim.g.minipairs_disable
-					if vim.g.minipairs_disable then
-						Util.warn("Disabled auto pairs", { title = "Option" })
-					else
-						Util.info("Enabled auto pairs", { title = "Option" })
-					end
+					require("nvim-autopairs").toggle()
 				end,
 				desc = "Toggle auto pairs",
 			},
@@ -55,6 +56,7 @@ return {
 				check_ts = true,
 				ts_config = {
 					tex = { "inline_formula", "math_environment", "displayed_equation" },
+					latex = { "inline_formula", "math_environment", "displayed_equation" },
 				},
 			})
 			npairs.add_rules({
@@ -153,7 +155,7 @@ return {
 				function()
 					require("neo-tree.command").execute({ toggle = true, dir = vim.fn.getcwd() })
 				end,
-				desc = "Open the neo-tree",
+				desc = "Open NeoTree",
 				mode = { "n", "v" },
 			},
 			{
@@ -865,17 +867,23 @@ return {
 					end
 				end,
 			})
+			require("nvim-web-devicons").get_icons_by_extension()
 			require("nvim-web-devicons").setup({
 				override_by_extension = {
+					["neo-tree"] = {
+						icon = "󱏒",
+						color = "#bd19e6",
+						name = "Neo-tree",
+					},
 					["log"] = {
 						icon = "",
 						color = "#81e043",
-						name = "Log",
+						name = "log",
 					},
 					["sty"] = {
 						icon = "",
 						color = "#006400",
-						name = "Sty",
+						name = "sty",
 					},
 					["m"] = {
 						icon = "ℳ",
@@ -890,15 +898,26 @@ return {
 					["aux"] = {
 						icon = "",
 						color = "#006400",
-						name = "Aux",
+						name = "aux",
 					},
-          ["norg"] = {
-            icon = "",
-            color = "#b34fee",
-            name="Norg",
-          },
+					["norg"] = {
+						icon = "",
+						color = "#b34fee",
+						name = "norg",
+					},
+					["lazy"] = {
+						icon = "󰒲",
+						color = "#0d69f2",
+						name = "Lazy",
+					},
+					["tex"] = {
+						icon = "",
+						color = "#2c8217",
+						name = "TeX",
+					},
 				},
 			})
+			require("nvim-web-devicons").set_icon_by_filetype({ ["neo-tree"] = "neo-tree", lazy = "lazy" })
 		end,
 		init = function()
 			-- FIX: use `autocmd` for lazy-loading neo-tree instead of directly requiring it,
@@ -922,20 +941,39 @@ return {
 	},
 	{
 		"folke/which-key.nvim",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons",
+		},
 		event = "VeryLazy",
 		config = function()
 			local wk = require("which-key")
-			wk.setup({})
+			wk.setup({
+				icons = {
+					rules = {
+						{ plugin = "lazygit.nvim", icon = "󰊢", color = "orange" },
+						{ plugin = "ccc.nvim", icon = "", color = "yellow" },
+						{ plugin = "yazi.nvim", icon = "󰇥", color = "blue" },
+						{ plugin = "latex.nvim", cat = "filetype", name = "tex" },
+						{ pattern = "mason", icon = "", color = "green" },
+						{ pattern = "playground", icon = "󰙨", color = "red" },
+					},
+				},
+				win = {
+					no_overlap = false,
+				},
+			})
 			wk.add({
 				{ "<leader>n", group = "Noice" },
 				{ "<leader>o", group = "Open window" },
 				{ "<leader>b", group = "Buffer" },
-				{ "<leader>f", group = "Find" },
+				{ "<leader>t", group = "LaTeX", icon = { cat = "filetype", name = "tex" } },
+				{ "<leader>f", group = "Find", icon = { icon = "", color = "blue" } },
 				{ "<leader>q", group = "Session" },
-				{ "<leader>g", group = "Goto" },
+				{ "g", group = "Goto" },
+				{ "<leader>u", group = "Toggle" },
 				{ "<leader>ot", "<cmd>terminal<cr>", desc = "Open Terminal" },
 				{ "<leader>ol", "<cmd>Lazy<cr>", desc = "Open Lazy" },
-				{ "<leader>om", "<cmd>Mason<cr>", desc = "Open Mason(for LS installP)" },
+				-- { "<leader>om", "<cmd>Mason<cr>", desc = "Open Mason(for LSP install)", icon = "" },
 			})
 		end,
 	},

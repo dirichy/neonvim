@@ -1,14 +1,25 @@
 local util = require("util")
 -- Key mappings --
 vim.keymap.set("n", "<A-Tab>", "<cmd>bNext<CR>")
-
+vim.keymap.set("n", "]e", function()
+	vim.diagnostic.goto_next({ float = false, severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Goto Next Error" })
+vim.keymap.set("n", "[e", function()
+	vim.diagnostic.goto_prev({ float = false, severity = vim.diagnostic.severity.ERROR })
+end, { desc = "Goto Prev Error" })
+vim.keymap.set("n", "]w", function()
+	vim.diagnostic.goto_next({ float = false, severity = vim.diagnostic.severity.WARN })
+end, { desc = "Goto Next Warning" })
+vim.keymap.set("n", "[w", function()
+	vim.diagnostic.goto_prev({ float = false, severity = vim.diagnostic.severity.WARN })
+end, { desc = "Goto Prev Warning" })
 vim.keymap.set("v", "J", "<cmd>m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", "<cmd>m '<-2<CR>gv=gv")
 
 vim.keymap.set({ "v", "n" }, "<leader>y", '"+y')
 vim.keymap.set({ "n" }, "<leader>qq", "<cmd>qa<cr>", { desc = "Quit" })
 
-vim.keymap.set("n", "<leader>uc", util.opt_toggle_fun("conceallevel", 2, 0, "conceal"), { desc = "Togglt Cocneal" })
+vim.keymap.set("n", "<leader>uc", util.opt_toggle_fun("conceallevel", 2, 0, "conceal"), { desc = "Toggle Cocneal" })
 vim.keymap.set("n", "<leader>tt", function()
 	local api = vim.api
 
@@ -37,4 +48,4 @@ vim.keymap.set("n", "<Up>", "<cmd>resize +2<cr>", { desc = "Increase window heig
 vim.keymap.set("n", "<Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
 vim.keymap.set("n", "<Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
 vim.keymap.set("n", "<Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
-vim.keymap.set("t", "<Esc><Esc>","<C-\\><C-n>",{desc = "Enter Normal Mode"})
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Enter Normal Mode" })

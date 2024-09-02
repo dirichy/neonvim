@@ -42,7 +42,7 @@ return {
 				function()
 					require("yazi").yazi()
 				end,
-				desc = "Open the file manager",
+				desc = "Open Yazi",
 			},
 			{
 				-- Open in the current working directory
@@ -50,7 +50,7 @@ return {
 				function()
 					require("yazi").yazi(nil, vim.fn.getcwd())
 				end,
-				desc = "Open the file manager in nvim's working directory",
+				desc = "Open Yazi in nvim's working directory",
 			},
 			-- {
 			-- 	"<c-up>",
