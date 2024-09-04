@@ -45,12 +45,10 @@ return {
 					-- they way you will only jump inside the snippet region
 					if luasnip.jumpable(1) then
 						luasnip.jump(1)
-					-- elseif has_words_before() then
-					--     cmp.complete()
 					else
 						fallback()
 					end
-				end, { "i", "s" }),
+				end, { "i" }),
 				["<S-Tab>"] = cmp.mapping(function(fallback)
 					-- if cmp.visible() then
 					--     cmp.select_prev_item()
