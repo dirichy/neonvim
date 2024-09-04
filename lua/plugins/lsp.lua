@@ -10,9 +10,10 @@ return {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig",
 			"folke/neoconf.nvim",
+			"barreiroleo/ltex_extra.nvim",
 			{
 				"j-hui/fidget.nvim",
-				tag = "legacy",
+				tag = "v1.4.5",
 			},
 			"nvimdev/lspsaga.nvim",
 		},
@@ -66,7 +67,11 @@ return {
 				-- nmap('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
 			end
 			require("neoconf").setup()
-			require("fidget").setup()
+			require("fidget").setup({
+				progress = {
+					ignore = { "ltex" },
+				},
+			})
 			require("lspsaga").setup()
 			require("mason").setup()
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -111,14 +116,14 @@ return {
 										enabled = { "latex", "tex", "bib", "markdown" },
 										diagnosticSeverity = "information",
 										completionEnabled = true,
-										checkFrequency = "save",
+										checkFrequency = "edit",
 										sentenceCacheSize = 2000,
 										additionalRules = {
 											enablePickyRules = true,
 											motherTongue = "zh-CN",
 										},
 										["ltex-ls"] = {
-											logLevel = "finest",
+											logLevel = "severe",
 										},
 										-- dictionary = (function()
 										-- 	-- For dictionary, search for files in the runtime to have
@@ -153,14 +158,14 @@ return {
 								enabled = { "latex", "tex", "bib", "markdown" },
 								diagnosticSeverity = "information",
 								completionEnabled = true,
-								checkFrequency = "save",
+								checkFrequency = "edit",
 								sentenceCacheSize = 2000,
 								additionalRules = {
 									enablePickyRules = true,
 									motherTongue = "zh-CN",
 								},
 								["ltex-ls"] = {
-									logLevel = "finest",
+									logLevel = "severe",
 								},
 								-- dictionary = (function()
 								-- 	-- For dictionary, search for files in the runtime to have

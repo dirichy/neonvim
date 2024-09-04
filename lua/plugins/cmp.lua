@@ -6,6 +6,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-cmdline",
+		"chrisgrieser/cmp_yanky",
 		{
 			"saadparwaiz1/cmp_luasnip",
 			-- dependencies = {
@@ -34,6 +35,7 @@ return {
 				{ name = "path" },
 				{ name = "luasnip" },
 				{ name = "buffer" },
+				{ name = "cmp_yanky" },
 			}),
 			mapping = cmp.mapping.preset.insert({
 				["<Tab>"] = cmp.mapping(function(fallback)

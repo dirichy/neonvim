@@ -1,5 +1,84 @@
 return {
 	{
+		"gbprod/yanky.nvim",
+		dependencies = {
+			"kkharji/sqlite.lua",
+		},
+		keys = {
+			{ "p", "<Plug>(YankyPutAfter)", desc = "Yanky Put After" },
+			{ "P", "<Plug>(YankyPutBefore)", desc = "Yanky Put Before" },
+			{ "y", "<Plug>(YankyYank)", desc = "Yanky Yank" },
+			{
+				"<leader>fy",
+				function()
+					require("telescope").extensions.yank_history.yank_history()
+				end,
+				desc = "Select Yanky History",
+			},
+		},
+		--
+		-- require("yanky").setup({
+		--   picker = {
+		--   }
+		-- })
+		opts = function()
+			local utils = require("yanky.utils")
+			local mapping = require("yanky.telescope.mapping")
+			return {
+				ring = {
+					history_length = 1000,
+					storage = "sqlite",
+					storage_path = vim.fn.stdpath("data") .. "/databases/yanky.db", -- Only for sqlite storage
+					sync_with_numbered_registers = true,
+					cancel_event = "update",
+					ignore_registers = { "_" },
+					update_register_on_cycle = false,
+				},
+				picker = {
+					select = {
+						action = nil, -- nil to use default put action
+					},
+					telescope = {
+						mappings = {
+							default = mapping.put("p"),
+							i = {
+								["<c-v>"] = mapping.put("p"),
+								["<c-b>"] = mapping.put("P"),
+								["<c-d>"] = mapping.delete(),
+								["<c-c>"] = mapping.set_register(utils.get_default_register()),
+							},
+							n = {
+								p = mapping.put("p"),
+								P = mapping.put("P"),
+								d = mapping.delete(),
+								y = mapping.set_register(utils.get_default_register()),
+							},
+						},
+					},
+				},
+				system_clipboard = {
+					sync_with_ring = true,
+					clipboard_register = nil,
+				},
+				highlight = {
+					on_put = true,
+					on_yank = true,
+					timer = 200,
+				},
+				preserve_cursor_position = {
+					enabled = true,
+				},
+				textobj = {
+					enabled = true,
+				},
+			}
+		end,
+		config = function(_, opts)
+			require("yanky").setup(opts)
+			require("telescope").load_extension("yank_history")
+		end,
+	},
+	{
 		"rainbowhxch/accelerated-jk.nvim",
 		keys = { "j", "k" },
 		config = function()
@@ -66,7 +145,17 @@ return {
 	},
 	{
 		"ethanholz/nvim-lastplace",
+		event = { "BufRead" },
 		config = true,
+		init = function()
+			if package.loaded["nvim-lastplace"] then
+				return
+			end
+			local stats = vim.uv.fs_stat(vim.fn.argv(0))
+			if stats and stats.type == "file" then
+				require("nvim-lastplace").setup()
+			end
+		end,
 	},
 	{
 		"rainzm/flash-zh.nvim",
@@ -867,7 +956,6 @@ return {
 					end
 				end,
 			})
-			require("nvim-web-devicons").get_icons_by_extension()
 			require("nvim-web-devicons").setup({
 				override_by_extension = {
 					["neo-tree"] = {
