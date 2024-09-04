@@ -2,17 +2,26 @@ return {
 	"nvim-neorg/neorg",
 	ft = "norg",
 	cmd = "Neorg",
+	keys = {
+		{ "<leader>gj", "<cmd>Neorg journal today<cr>", desc = "Goto Journal" },
+		{ "<localleader>im", "<cmd>Neorg inject-metadata<cr>", desc = "Inject Metadata" },
+		{ "<localleader>is", "<cmd>Neorg generate-workspace-summary<cr>", desc = "Inject Summary" },
+	},
 	version = "*",
 	config = function()
 		require("neorg").setup({
 			load = {
 				["core.defaults"] = {},
+				["core.summary"] = {
+					config = {
+						strategy = "default",
+					},
+				},
 				["core.completion"] = {
 					config = {
 						engine = "nvim-cmp",
 					},
 				},
-				["core.summary"] = {},
 				["core.concealer"] = {
 					config = {
 						icons = {
@@ -57,5 +66,6 @@ return {
 		})
 		vim.wo.foldlevel = 99
 		vim.wo.conceallevel = 2
+		vim.wo.concealcursor = "n"
 	end,
 }

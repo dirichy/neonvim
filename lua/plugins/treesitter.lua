@@ -6,7 +6,7 @@ return {
 		-- "HiPhish/rainbow-delimiters.nvim",
 	},
 	main = "nvim-treesitter.configs",
-	build = "<cmd>TSUpdate<cr>",
+	build = ":TSUpdate",
 	opts = {
 		ensure_installed = "all",
 		highlight = {
@@ -92,7 +92,7 @@ return {
 		-- 		generate_requires_npm = false, -- if stand-alone parser without npm dependencies
 		-- 		requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
 		-- 	},
-			-- filetype = "latexconceal", -- if filetype does not match the parser name
+		-- filetype = "latexconceal", -- if filetype does not match the parser name
 		-- }
 		require("nvim-treesitter.configs").setup(opts)
 		vim.keymap.set("n", "<leader>op", "<cmd>InspectTree<cr><cmd>EditQuery<cr>", { desc = "Open Playground" })
