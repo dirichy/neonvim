@@ -17,6 +17,11 @@ return {
 						strategy = "default",
 					},
 				},
+				["core.completion"] = {
+					config = {
+						engine = "nvim-cmp",
+					},
+				},
 				["core.concealer"] = {
 					config = {
 						icons = {
