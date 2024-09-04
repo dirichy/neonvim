@@ -68,7 +68,7 @@ return {
 		hidden = true,
 	}, {
 		f(function(_, snip)
-			return string.rep("-", tonumber(snip.captures[1])) .. " ["
+			return string.rep("-", tonumber(snip.captures[1])) .. " "
 		end, {}),
 	}, {
 		condition = line_begin,
