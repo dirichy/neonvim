@@ -27,6 +27,40 @@ return {
 		})
 	),
 	s(
+		{ trig = "tt", snippetType = "autosnippet" },
+		fmta(
+			[[
+@code latex
+\[
+<>
+\]
+@end
+<>
+	   ]],
+			{
+				i(1),
+				i(0),
+			}
+		)
+	),
+	s(
+		{ trig = ".eq", snippetType = "autosnippet" },
+		fmta(
+			[[
+@code latex
+\begin{equation}
+<>
+\end{equation}
+@end
+<>
+	   ]],
+			{
+				i(1),
+				i(0),
+			}
+		)
+	),
+	s(
 		{ trig = "|$ ([^%a])", regTrig = true, wordTrig = false, snippetType = "autosnippet", priority = 2000 },
 		fmta("|$<>", {
 			f(function(_, snip)

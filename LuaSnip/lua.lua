@@ -103,15 +103,4 @@ s({ trig = "<>", snippetType = "autosnippet" },
 		),
 		{ condition = line_begin }
 	),
-	s(
-		{ trig = "([^%s]*)@", regTrig = true, snippetType = "autosnippet" },
-		fmta([[<> = { tipa = "<>", conceal = "<>"},]], {
-			f(function(_, snip)
-				return snip.captures[1]
-			end),
-			i(1),
-			i(2),
-		}),
-		{ condition = line_begin }
-	),
 }
