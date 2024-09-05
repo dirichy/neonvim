@@ -2,6 +2,8 @@
 return {
 	{
 		"3rd/image.nvim",
+		enabled = not vim.env.SSH_TTY,
+		lazy = true,
 		config = function()
 			-- default config
 			package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
