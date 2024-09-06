@@ -45,7 +45,16 @@ return {
 		"folke/zen-mode.nvim",
 		cmd = "ZenMode",
 		keys = {
-			{ "<leader>uz", "<cmd>ZenMode<cr>", desc = "Toggle ZenMode" },
+			{
+				"<leader>uz",
+				function()
+					if package.loaded["neo- tree"] then
+						vim.cmd.Neotree("close")
+					end
+					vim.cmd.ZenMode()
+				end,
+				desc = "Toggle ZenMode",
+			},
 		},
 		opts = {
 			plugins = {
