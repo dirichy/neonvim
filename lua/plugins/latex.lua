@@ -5,7 +5,10 @@ return {
 		keys = {
 			{
 				"<leader>tb",
-				'<cmd>lua require("latex.compile.arara")()<cr>',
+				function()
+					vim.cmd.write()
+					require("latex.compile.arara")()
+				end,
 				desc = "Compile LaTeX File",
 			},
 		},
