@@ -34,6 +34,7 @@ return {
 			{
 				"<leader><space>",
 				function()
+					--HACK:nvim-lastplace is not maintained and don't work when neo-tree opening, so we close neo-tree before using telescope.
 					if package.loaded["neo-tree"] then
 						vim.cmd("Neotree close")
 					end
