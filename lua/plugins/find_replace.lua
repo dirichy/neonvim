@@ -9,8 +9,6 @@ return {
 			},
 		},
 		keys = {
-			{ "<leader>fr", "<cmd>lua require('telescope.builtin').oldfiles()<cr>", desc = "Find Recent flies" },
-			{ "<leader><space>", "<cmd>lua require('telescope.builtin').buffers({ sort_mru = true })<cr>" },
 			{
 				"<leader>fb",
 				function()
@@ -33,14 +31,104 @@ return {
 				end,
 				desc = "Find in current Buffer",
 			},
-			{ "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "Find Files" },
-			{ "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<cr>", desc = "Live Grep" },
-			{ "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>", desc = "Find Help" },
-			{ "<leader>f?", "<cmd>lua require('telescope.builtin').builtin()<cr>", desc = "Find What to find" },
-			{ "<leader>fm", "<cmd>lua require('telescope.builtin').marks()<cr>", desc = "Find Mark" },
-			{ "<leader>qf", "<cmd>lua require('telescope.builtin').quickfix()<cr>" },
-			{ "<leader>fk", "<cmd>lua require('telescope.builtin').keymaps()<cr>", desc = "Find Keymap" },
-			{ "<leader>fc", "<cmd>lua require('telescope.builtin').commands()<cr>", desc = "Find Command" },
+			{
+				"<leader><space>",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").buffers({ sort_mru = true })
+				end,
+			},
+			{
+				"<leader>f?",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").builtin()
+				end,
+				desc = "Find What to find",
+			},
+			{
+				"<leader>fc",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").commands()
+				end,
+				desc = "Find Command",
+			},
+			{
+				"<leader>ff",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").find_files()
+				end,
+				desc = "Find Files",
+			},
+			{
+				"<leader>fg",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").live_grep()
+				end,
+				desc = "Live Grep",
+			},
+			{
+				"<leader>fh",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").help_tags()
+				end,
+				desc = "Find Help",
+			},
+			{
+				"<leader>fk",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").keymaps()
+				end,
+				desc = "Find Keymap",
+			},
+			{
+				"<leader>fm",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").marks()
+				end,
+				desc = "Find Mark",
+			},
+			{
+				"<leader>fr",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").oldfiles()
+				end,
+				desc = "Find Recent flies",
+			},
+			{
+				"<leader>qf",
+				function()
+					if package.loaded["neo-tree"] then
+						vim.cmd("Neotree close")
+					end
+					require("telescope.builtin").quickfix()
+				end,
+			},
 		},
 		config = function()
 			require("telescope").setup({

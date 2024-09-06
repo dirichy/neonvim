@@ -88,9 +88,10 @@ M = {
 		{ condition = tex.in_preamble * line_begin }
 	),
 	s(
-		{ trig = ".do", snippetType = "autosnippet" },
+		{ trig = ".do", snippetType = "autosnippet", priority = 1000 },
 		fmta(
 			[[
+%arara: <>
 \documentclass{<>}
 <>
 \begin{document}
@@ -98,8 +99,47 @@ M = {
 \end{document}
       ]],
 			{
+				f(function(args, snip)
+					if args and args[1] and args[1][1] == "ctexart" then
+						return "xelatex"
+					end
+					return "pdflatex"
+				end, { 1 }),
 				i(1),
-				i(2),
+				d(2, function()
+					local input = vim.fn.input({ prompt = "Math?y/n" }):lower()
+					if input == "y" then
+						return sn(
+							nil,
+							fmta(
+								[=[
+\usepackage{amsmath,amssymb,amsthm,bbm}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\everymath{\displaystyle}
+\newlength\inlineHeight
+\newlength\inlineWidth
+\long\def\(#1\){%
+  \settoheight{\inlineHeight}{$#1$}
+  \settowidth{\inlineWidth}{$#1$}
+  \ifdim \inlineWidth >> 0.5\textwidth
+  $$#1$$
+  \else
+  \ifdim \inlineHeight >> 1.5em
+  $$#1$$
+  \else
+  $#1$
+  \fi
+  \fi
+}
+<>
+]=],
+								{ i(1) }
+							)
+						)
+					end
+					return sn(nil, { i(1) })
+				end),
 				i(0),
 			}
 		),
