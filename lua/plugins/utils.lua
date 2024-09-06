@@ -101,7 +101,10 @@ return {
 			{
 				"<leader>qs",
 				function()
-					vim.cmd([[Neotree close]])
+					--HACK:Nrotree will break nvim-lastplace
+					if package.loaded["neo-tree"] then
+						vim.cmd([[Neotree close]])
+					end
 					vim.cmd([[lua require("persistence").load() ]])
 				end,
 				desc = "Load Session",

@@ -1,7 +1,19 @@
 return {
+	{
+		"danymat/neogen",
+		keys = {
+			{ "<leader>id", "<cmd>Neogen<cr>", desc = "Insert Doc" },
+		},
+		config = function()
+			require("neogen").setup({ snippet_engine = "luasnip" })
+		end,
+		-- Uncomment next line if you want to follow only stable versions
+		-- version = "*"
+	},
 	--TODO:config this plugin
 	{
 		"folke/todo-comments.nvim",
+		event = "VeryLazy",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = {},
 	},
@@ -54,6 +66,7 @@ return {
 			{
 				"<leader>uz",
 				function()
+					--HACK:Neotree will break ZenMode
 					if package.loaded["neo- tree"] then
 						vim.cmd.Neotree("close")
 					end
