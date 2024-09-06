@@ -1,5 +1,27 @@
 return {
 	{
+		"stevearc/aerial.nvim",
+		keys = {
+			{ "<leader>oa", "<cmd>AerialToggle!<cr>", desc = "Open AerialToggle!" },
+			{ "]a", "<cmd>AerialNext<cr>", desc = "Aerial Next" },
+			{ "[a", "<cmd>AerialPrev<cr>", desc = "Aerial Prev" },
+			{ "<leader>fa", "<cmd>Telescope aerial<cr>", desc = "Find Aerial" },
+		},
+		-- Optional dependencies
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-tree/nvim-web-devicons",
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function()
+			require("aerial").setup({
+				autojump = true,
+				close_on_select = true,
+			})
+			require("telescope").load_extension("aerial")
+		end,
+	},
+	{
 		"danymat/neogen",
 		keys = {
 			{ "<leader>id", "<cmd>Neogen<cr>", desc = "Insert Doc" },

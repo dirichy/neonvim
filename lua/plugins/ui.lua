@@ -27,7 +27,7 @@ return {
 					numbers = "buffer_id", --| "both" |"none" | "ordinal" |  function({ ordinal, id, lower, raise }): string,
 					close_command = "bdelete! %d", -- can be a string | function, | false see "Mouse actions"
 					right_mouse_command = "bdelete! %d", -- can be a string | function | false, see "Mouse actions"
-					left_mouse_command = "buffer %d", -- can be a string | function, | false see "Mouse actions"
+					left_mouse_command = "buffer d", -- can be a string | function, | false see "Mouse actions"
 					middle_mouse_command = nil, -- can be a string | function, | false see "Mouse actions"
 					indicator = {
 						icon = "▎", -- this should be omitted if indicator style is not 'icon'
@@ -130,33 +130,34 @@ return {
 			})
 		end,
 	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		event = "VeryLazy",
-		main = "ibl",
-		opts = {
-			indent = {
-				char = "│",
-				tab_char = "│",
-			},
-			scope = { show_start = false, show_end = false },
-			exclude = {
-				filetypes = {
-					"help",
-					"alpha",
-					"dashboard",
-					"neo-tree",
-					"Trouble",
-					"trouble",
-					"lazy",
-					"mason",
-					"notify",
-					"toggleterm",
-					"lazyterm",
-				},
-			},
-		},
-	},
+	{ "echasnovski/mini.indentscope", version = false, config = true },
+	-- {
+	-- 	"lukas-reineke/indent-blankline.nvim",
+	-- 	event = "VeryLazy",
+	-- 	main = "ibl",
+	-- 	opts = {
+	-- 		indent = {
+	-- 			char = "│",
+	-- 			tab_char = "│",
+	-- 		},
+	-- 		scope = { show_start = false, show_end = false },
+	-- 		exclude = {
+	-- 			filetypes = {
+	-- 				"help",
+	-- 				"alpha",
+	-- 				"dashboard",
+	-- 				"neo-tree",
+	-- 				"Trouble",
+	-- 				"trouble",
+	-- 				"lazy",
+	-- 				"mason",
+	-- 				"notify",
+	-- 				"toggleterm",
+	-- 				"lazyterm",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- },
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
@@ -187,28 +188,69 @@ return {
 
 			-- logo = string.rep("\n", 8) .. logo .. "\n\n"
 
+			-- vim.g.dashboard_preview_command = 'cat'
+			-- vim.g.dashboard_preview_pipeline = 'lolcat'
+			-- vim.g.dashboard_preview_file = path to logo file like
+			-- ~/.config/nvim/neovim.cat
+			-- vim.g.dashboard_preview_file_height = 12
+			-- vim.g.dashboard_preview_file_width = 80
 			local opts = {
 				theme = "doom",
+				disable_move = true,
 				hide = {
 					-- this is taken care of by lualine
 					-- enabling this messes up the actual laststatus setting after loading a file
 					statusline = false,
 				},
+				-- preview = {
+				-- 	command = "lolcat",
+				-- 	file_path = "~/.config/nvim/resources/dashboard.txt",
+				-- 	file_height = 8,
+				-- 	file_width = 51,
+				-- },
 				config = {
-					header = vim.split(logo, "\n"),
-          -- stylua: ignore
-          center = {
-            { action = 'lua require("telescope.builtin").find_files()', desc = " Find File", icon = " ", key = "f" },
-            { action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
-            { action = 'lua require("telescope.builtin").oldfiles()', desc = " Recent Files", icon = " ", key = "r" },
-            { action = 'lua require("telescope.builtin").live_grep()', desc = " Live Grip", icon = " ", key = "g" },
-            { action = 'lua require("telescope.builtin").find_files({cwd="~/.config/nvim"})', desc = " Config", icon = " ", key = "c" },
-            { action = 'lua require("persistence").load()', desc = " Restore Session", icon = " ", key = "s" },
-            {action='Leet',desc=" Leet Code",icon="󰪚 ",key="e"},
-            -- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
-            { action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
-            { action = "qa", desc = " Quit", icon = " ", key = "q" },
-          },
+					disable_move = true,
+					week_header = {
+						enable = true,
+					},
+					-- header = vim.split(logo, "\n"),
+					center = {
+						{
+							action = 'lua require("telescope.builtin").find_files()',
+							desc = " Find File",
+							icon = " ",
+							key = "f",
+						},
+						{ action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
+						{
+							action = 'lua require("telescope.builtin").oldfiles()',
+							desc = " Recent Files",
+							icon = " ",
+							key = "r",
+						},
+						{
+							action = 'lua require("telescope.builtin").live_grep()',
+							desc = " Live Grip",
+							icon = " ",
+							key = "g",
+						},
+						{
+							action = 'lua require("telescope.builtin").find_files({cwd="~/.config/nvim"})',
+							desc = " Config",
+							icon = " ",
+							key = "c",
+						},
+						{
+							action = 'lua require("persistence").load()',
+							desc = " Restore Session",
+							icon = " ",
+							key = "s",
+						},
+						{ action = "Leet", desc = " Leet Code", icon = "󰪚 ", key = "e" },
+						-- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
+						{ action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
+						{ action = "qa", desc = " Quit", icon = " ", key = "q" },
+					},
 					footer = function()
 						local stats = require("lazy").stats()
 						local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
@@ -221,7 +263,7 @@ return {
 
 			for _, button in ipairs(opts.config.center) do
 				button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
-				button.key_format = "  %s"
+				button.key_format = "  s"
 			end
 
 			-- open dashboard after closing lazy
