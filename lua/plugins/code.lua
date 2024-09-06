@@ -1,4 +1,10 @@
 return {
+	--TODO:config this plugin
+	{
+		"folke/todo-comments.nvim",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		opts = {},
+	},
 	{
 		"stevearc/conform.nvim",
 		event = "CmdlineEnter",
