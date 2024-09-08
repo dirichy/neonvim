@@ -1,4 +1,5 @@
 return {
+	{ "kamalsacranie/nvim-mapper", lazy = false, config = true },
 	{
 		"gbprod/yanky.nvim",
 		dependencies = {
@@ -119,33 +120,33 @@ return {
 		},
 		config = true,
 	},
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		keys = {
-			{
-				"<leader>up",
-				function()
-					require("nvim-autopairs").toggle()
-				end,
-				desc = "Toggle auto pairs",
-			},
-		},
-		config = function()
-			local npairs = require("nvim-autopairs")
-			local Rule = require("nvim-autopairs.rule")
-			npairs.setup({
-				check_ts = true,
-				ts_config = {
-					tex = { "inline_formula", "math_environment", "displayed_equation" },
-					latex = { "inline_formula", "math_environment", "displayed_equation" },
-				},
-			})
-			npairs.add_rules({
-				Rule("``", "''", { "tex", "latex" }),
-			})
-		end,
-	},
+	-- {
+	-- 	"windwp/nvim-autopairs",
+	-- 	event = "InsertEnter",
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>ua",
+	-- 			function()
+	-- 				require("nvim-autopairs").toggle()
+	-- 			end,
+	-- 			desc = "Toggle Autopairs",
+	-- 		},
+	-- 	},
+	-- 	config = function()
+	-- 		local npairs = require("nvim-autopairs")
+	-- 		local Rule = require("nvim-autopairs.rule")
+	-- 		npairs.setup({
+	-- 			check_ts = true,
+	-- 			ts_config = {
+	-- 				tex = { "inline_formula", "math_environment", "displayed_equation" },
+	-- 				latex = { "inline_formula", "math_environment", "displayed_equation" },
+	-- 			},
+	-- 		})
+	-- 		npairs.add_rules({
+	-- 			Rule("``", "''", { "tex", "latex" }),
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"ethanholz/nvim-lastplace",
 		event = { "BufRead" },

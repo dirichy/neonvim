@@ -202,10 +202,14 @@ return {
 	},
 	{
 		"folke/lazydev.nvim",
+		dependencies = {
+			{ "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+		},
 		ft = "lua",
 		opts = {
 			library = {
 				{ path = "~/Documents/.lib/LuaTeX_Lua-API/library/", words = { "tex" } },
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
 			},
 			enabled = function(root_dir)
 				return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled

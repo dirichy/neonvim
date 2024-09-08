@@ -169,7 +169,14 @@ return {
 		keys = {
 			{ "<leader>oc", "<cmd>CccPick<cr>", desc = "Open Color Picker" },
 		},
-		config = true,
+		config = function()
+			require("ccc").setup({
+				highlighter = {
+					auto_enable = true,
+					lsp = true,
+				},
+			})
+		end,
 	},
 	{
 		"norcalli/nvim-terminal.lua",

@@ -1,5 +1,8 @@
 return {
 	"L3MON4D3/LuaSnip",
+	dependencies = {
+		{ "kamalsacranie/nvim-mapper" },
+	},
 	event = "InsertEnter",
 	build = "make install_jsregexp",
 	opts = function()
@@ -111,11 +114,11 @@ return {
       exit_roots = false,
       link_children = false,
 
-      update_events = "InsertLeave",
+      update_events = {"InsertLeave","TextChangedI"},
       -- see :h User, event should never be triggered(except if it is `doautocmd`'d)
-      region_check_events = nil,
-      delete_check_events = nil,
-      store_selection_keys = '.', -- Supossed to be the same as the expand shortcut
+      region_check_events = "InsertEnter",
+      delete_check_events = {"TextChangedI","TextChanged"},
+      store_selection_keys = '<tab>', -- Supossed to be the same as the expand shortcut
       ext_opts = {
         [types.textNode] = {
           active = { hl_group = "LuasnipTextNodeActive" },
@@ -224,7 +227,35 @@ return {
     }
 	end,
 	config = function(_, opts)
-		require("luasnip").setup(opts)
+		local luasnip = require("luasnip")
+		luasnip.setup(opts)
+		local key_mapper = require("nvim-mapper")
+		key_mapper.map_keymap("i", "<Tab>", function(fallback)
+			if luasnip.jumpable(1) then
+				luasnip.jump(1)
+			else
+				fallback()
+			end
+		end)
+		key_mapper.map_keymap("i", "<S-Tab>", function(fallback)
+			-- if cmp.visible() then
+			--     cmp.select_prev_item()
+			if luasnip.jumpable(-1) then
+				luasnip.jump(-1)
+			else
+				fallback()
+			end
+		end)
+		local cmp = require("cmp")
+		key_mapper.map_keymap("i", "<CR>", function(fallback)
+			if luasnip.expandable() then
+				luasnip.expand()
+			elseif cmp.visible() then
+				cmp.confirm({ select = true })
+			else
+				fallback()
+			end
+		end)
 		require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/LuaSnip" } })
 	end,
 }
