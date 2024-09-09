@@ -1,5 +1,61 @@
 return {
 	{
+		"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+		lazy = true,
+		config = function()
+			require("nvim-web-devicons").setup({
+				override_by_extension = {
+					["neo-tree"] = {
+						icon = "󱏒",
+						color = "#bd19e6",
+						name = "Neo-tree",
+					},
+					["log"] = {
+						icon = "",
+						color = "#81e043",
+						name = "log",
+					},
+					["sty"] = {
+						icon = "",
+						color = "#006400",
+						name = "sty",
+					},
+					["m"] = {
+						icon = "ℳ",
+						color = "#ff8000",
+						name = "Matlab",
+					},
+					["fig"] = {
+						icon = "",
+						color = "#ff8000",
+						name = "MatlabFig",
+					},
+					["aux"] = {
+						icon = "",
+						color = "#006400",
+						name = "aux",
+					},
+					["norg"] = {
+						icon = "",
+						color = "#b34fee",
+						name = "norg",
+					},
+					["lazy"] = {
+						icon = "󰒲",
+						color = "#0d69f2",
+						name = "Lazy",
+					},
+					["tex"] = {
+						icon = "",
+						color = "#2c8217",
+						name = "TeX",
+					},
+				},
+			})
+			require("nvim-web-devicons").set_icon_by_filetype({ ["neo-tree"] = "neo-tree", lazy = "lazy" })
+		end,
+	},
+	{
 		"monaqa/dial.nvim",
 		keys = {
 			{ "<c-a>", "<Plug>(dial-increment)" },
