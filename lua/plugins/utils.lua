@@ -356,6 +356,7 @@ return {
 				{ "<leader>ol", "<cmd>Lazy<cr>", desc = "Open Lazy" },
 				-- { "<leader>om", "<cmd>Mason<cr>", desc = "Open Mason(for LSP install)", icon = "" },
 			})
+			wk.add(require("mapper").which_key_spec)
 		end,
 	},
 	{

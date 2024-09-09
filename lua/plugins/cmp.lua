@@ -40,7 +40,7 @@ return {
 		})
 		local key_mapper = require("mapper")
 
-		key_mapper.map_keymap("i", "<CR>", function()
+		key_mapper.map_keymap("i", "<cr>", function()
 			cmp.confirm({ select = true })
 		end, { desc = "Confirm selected cmp item", condition = cmp.visible, priority = 100 })
 		key_mapper.map_keymap("i", "<up>", function()
@@ -49,10 +49,16 @@ return {
 		key_mapper.map_keymap("i", "<down>", function()
 			cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 		end, { condition = cmp.visible, desc = "Cmp Next Item", priority = 100 })
-		-- key_mapper.map_keymap("i","<Up>",function ()
-		-- end)
-
-		cmp.setup.cmdline("/", {
+		key_mapper.map_keymap("c", "<up>", function()
+			cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+		end, { condition = cmp.get_active_entry, desc = "Cmp Prev Item", priority = 100 })
+		key_mapper.map_keymap("c", "<down>", function()
+			cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+		end, { condition = cmp.get_active_entry, desc = "Cmp Next Item", priority = 100 })
+		key_mapper.map_keymap({ "i", "c" }, "<esc>", function()
+			cmp.abort()
+		end, { condition = cmp.visible, desc = "Close cmp windows", priority = 100 })
+		cmp.setup.cmdline({ "/", "?" }, {
 			mapping = cmp.mapping.preset.cmdline(),
 			sources = {
 				{ name = "buffer" },
