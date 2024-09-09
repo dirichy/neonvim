@@ -38,6 +38,20 @@ return {
 				ghost_text = true,
 			},
 		})
+		local key_mapper = require("mapper")
+
+		key_mapper.map_keymap("i", "<CR>", function()
+			cmp.confirm({ select = true })
+		end, { desc = "Confirm selected cmp item", condition = cmp.visible, priority = 100 })
+		key_mapper.map_keymap("i", "<up>", function()
+			cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+		end, { condition = cmp.visible, desc = "Cmp Prev Item", priority = 100 })
+		key_mapper.map_keymap("i", "<down>", function()
+			cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+		end, { condition = cmp.visible, desc = "Cmp Next Item", priority = 100 })
+		-- key_mapper.map_keymap("i","<Up>",function ()
+		-- end)
+
 		cmp.setup.cmdline("/", {
 			mapping = cmp.mapping.preset.cmdline(),
 			sources = {

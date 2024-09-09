@@ -1,7 +1,7 @@
 return {
 	"L3MON4D3/LuaSnip",
 	dependencies = {
-		{ "kamalsacranie/nvim-mapper" },
+		{ "dirichy/mapper.nvim" },
 	},
 	event = "InsertEnter",
 	build = "make install_jsregexp",
@@ -229,33 +229,33 @@ return {
 	config = function(_, opts)
 		local luasnip = require("luasnip")
 		luasnip.setup(opts)
-		local key_mapper = require("nvim-mapper")
-		key_mapper.map_keymap("i", "<Tab>", function(fallback)
-			if luasnip.jumpable(1) then
-				luasnip.jump(1)
-			else
-				fallback()
-			end
-		end)
-		key_mapper.map_keymap("i", "<S-Tab>", function(fallback)
-			-- if cmp.visible() then
-			--     cmp.select_prev_item()
-			if luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end)
-		local cmp = require("cmp")
-		key_mapper.map_keymap("i", "<CR>", function(fallback)
-			if luasnip.expandable() then
-				luasnip.expand()
-			elseif cmp.visible() then
-				cmp.confirm({ select = true })
-			else
-				fallback()
-			end
-		end)
+		local key_mapper = require("mapper")
+		key_mapper.map_keymap("i", "<Tab>", function()
+			luasnip.jump(1)
+		end, {
+			condition = function()
+				return luasnip.jumpable(1)
+			end,
+			desc = "jump",
+			priority = 200,
+		})
+
+		key_mapper.map_keymap("i", "<S-Tab>", function()
+			luasnip.jump(-1)
+		end, {
+			priority = 200,
+			condition = function()
+				return luasnip.jumpable(-1)
+			end,
+			desc = "jump back",
+		})
+		key_mapper.map_keymap(
+			"i",
+			"<CR>",
+			luasnip.expand,
+			{ desc = "expand luasnip", condition = luasnip.expandable, priority = 200 }
+		)
+
 		require("luasnip.loaders.from_lua").load({ paths = { "~/.config/nvim/LuaSnip" } })
 	end,
 }
