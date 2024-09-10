@@ -251,8 +251,8 @@ return {
 	},
 	{
 		"folke/persistence.nvim",
-		lazy = true,
-		event = "ExitPre",
+		lazy = false,
+		-- event = "ExitPre",
 		keys = {
 			{
 				"<leader>qs",
@@ -317,9 +317,7 @@ return {
 		end,
 	},
 	{
-		"rainzm/flash-zh.nvim",
-		-- keys = { "s", "S", "r", "R", "/", "f", "F" },
-		dependencies = "folke/flash.nvim",
+		"folke/flash.nvim",
 		lazy = true,
 		event = "VeryLazy",
 		keys = {
@@ -327,19 +325,13 @@ return {
 				"s",
 				mode = { "n", "x", "o" },
 				function()
-					if vim.g.curlang == "zh" then
-						require("flash-zh").jump({
-							chinese_only = false,
-						})
-					else
-						require("flash").jump()
-					end
+					require("flash").jump()
 				end,
-				desc = "Flash between Chinese",
+				desc = "Flash",
 			},
 			{
 				"S",
-				mode = { "n", "o", "x" },
+				mode = { "n" },
 				function()
 					require("flash").treesitter()
 				end,

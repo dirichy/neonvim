@@ -39,7 +39,10 @@ map("v", "J", "<cmd>m '>+1<CR>gv=gv")
 map("v", "K", "<cmd>m '<-2<CR>gv=gv")
 
 map({ "v", "n" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
-map({ "n" }, "<leader>qq", "<cmd>qa<cr>", { desc = "Quit" })
+map({ "n" }, "<leader>qq", function()
+	require("persistence").save()
+	vim.cmd([[qa]])
+end, { desc = "Quit" })
 --Toggles
 map("n", "<leader>uc", util.opt_toggle_fun("conceallevel", 2, 0, "conceal"), { desc = "Toggle Cocneal" })
 map("n", "<leader>up", util.opt_toggle_fun("paste", true, false, "paste"), { desc = "Toggle Paste" })
