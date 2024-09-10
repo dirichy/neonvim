@@ -94,6 +94,19 @@ return {
 						sord = true,
 						cyclic = true,
 					}),
+					augend.constant.new({
+						elements = {
+							"星期一",
+							"星期二",
+							"星期三",
+							"星期四",
+							"星期五",
+							"星期六",
+							"星期日",
+						},
+						sord = true,
+						cyclic = true,
+					}),
 					augend.constant.alias.bool,
 					augend.constant.alias.alpha,
 					augend.constant.alias.Alpha,
@@ -103,6 +116,7 @@ return {
 	},
 	{
 		"nvimtools/hydra.nvim",
+		keys = { "z" },
 		config = function()
 			local Hydra = require("hydra")
 			Hydra.setup({
