@@ -130,34 +130,43 @@ return {
 			})
 		end,
 	},
-	{ "echasnovski/mini.indentscope", version = false, config = true },
-	-- {
-	-- 	"lukas-reineke/indent-blankline.nvim",
-	-- 	event = "VeryLazy",
-	-- 	main = "ibl",
-	-- 	opts = {
-	-- 		indent = {
-	-- 			char = "│",
-	-- 			tab_char = "│",
-	-- 		},
-	-- 		scope = { show_start = false, show_end = false },
-	-- 		exclude = {
-	-- 			filetypes = {
-	-- 				"help",
-	-- 				"alpha",
-	-- 				"dashboard",
-	-- 				"neo-tree",
-	-- 				"Trouble",
-	-- 				"trouble",
-	-- 				"lazy",
-	-- 				"mason",
-	-- 				"notify",
-	-- 				"toggleterm",
-	-- 				"lazyterm",
-	-- 			},
-	-- 		},
-	-- 	},
-	-- },
+	-- { "echasnovski/mini.indentscope", version = false, config = true },
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		dependencies = {
+			"TheGLander/indent-rainbowline.nvim",
+		},
+		event = "VeryLazy",
+		main = "ibl",
+		opts = {
+			indent = {
+				char = "│",
+				tab_char = "│",
+			},
+			scope = { show_start = false, show_end = false },
+			exclude = {
+				filetypes = {
+					"help",
+					"alpha",
+					"dashboard",
+					"neo-tree",
+					"Trouble",
+					"trouble",
+					"lazy",
+					"mason",
+					"notify",
+					"toggleterm",
+					"lazyterm",
+				},
+			},
+		},
+		config = function(_, opts)
+			require("ibl").setup(require("indent-rainbowline").make_opts(opts, {
+				color_transparency = 0.3,
+				colors = { 0xff0000, 0x00ff00, 0x8b00ff, 0xffff00, 0x0000ff, 0xffa500, 0x007fff },
+			}))
+		end,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
