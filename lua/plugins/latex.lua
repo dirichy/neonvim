@@ -16,6 +16,11 @@ return {
 			require("latex").setup()
 		end,
 	},
+	{
+		"dirichy/latex_concealer.nvim",
+		ft = "tex",
+		config = true,
+	},
 	-- {
 	--   "bamonroe/rnoweb-nvim",
 	--   lazy=false,
