@@ -378,8 +378,8 @@ return {
 
 			window = { -- see https://github.com/MunifTanjim/nui.nvim/tree/main/lua/nui/popup for
 				-- possible options. These can also be functions that return these options.
-				position = "current", -- left, right, top, bottom, float, current
-				-- width = 40, -- applies to left and right positions
+				position = "left", -- left, right, top, bottom, float, current
+				width = 20, -- applies to left and right positions
 				-- height = 15, -- applies to top and bottom positions
 				auto_expand_width = true, -- expand the window when file exceeds the window width. does not work with position = "float"
 				popup = { -- settings that apply to float position only
@@ -457,7 +457,7 @@ return {
 						["H"] = "toggle_hidden",
 						["/"] = "fuzzy_finder",
 						["D"] = "fuzzy_finder_directory",
-						--["/"] = "filter_as_you_type", -- this was the default until v1.28
+						-- ["/"] = "filter_as_you_type", -- this was the default until v1.28
 						["#"] = "fuzzy_sorter", -- fuzzy sorting using the fzy algorithm
 						-- ["D"] = "fuzzy_sorter_directory",
 						["f"] = "filter_on_submit",

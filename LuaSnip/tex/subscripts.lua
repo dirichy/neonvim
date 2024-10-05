@@ -8,7 +8,7 @@ local autosnippet = ls.extend_decorator.apply(s, { snippetType = "autosnippet" }
 -- [
 -- personal imports
 -- ]
-local tex =require("latex.conditions.luasnip")
+local tex =require("latex_snip.conditions.luasnip")
 M = {
   autosnippet(
     {

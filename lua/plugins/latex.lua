@@ -13,8 +13,14 @@ return {
 			},
 		},
 		config = function()
-			require("latex").setup()
+			require("latex_snip").setup()
 		end,
+	},
+	{
+		"dirichy/latex_concealer.nvim",
+		ft = "tex",
+		opts = {},
+		config = true,
 	},
 	-- {
 	--   "bamonroe/rnoweb-nvim",

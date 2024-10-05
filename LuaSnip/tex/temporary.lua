@@ -4,7 +4,7 @@ local t = ls.text_node
 local i = ls.insert_node
 local fmta = require("luasnip.extras.fmt").fmta
 
-local tex = require("latex.conditions.luasnip")
+local tex = require("latex_snip.conditions.luasnip")
 
 return {
 	s(
