@@ -30,7 +30,7 @@ return {
 					highlight["@mathfont"] = {
 						fg = "#f59090",
 					}
-					highlight["@symbol"] = {
+					highlight["MathGreek"] = {
 						fg = "#44ff44",
 					}
 					highlight.Function = {

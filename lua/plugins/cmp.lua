@@ -28,7 +28,7 @@ return {
 				{ name = "path" },
 				{ name = "luasnip" },
 				{ name = "buffer" },
-				{ name = "cmp_yanky" },
+				-- { name = "cmp_yanky" },
 				{ name = "lazydev" },
 			}),
 			-- mapping = cmp.mapping.preset.insert({
@@ -66,7 +66,6 @@ return {
 		})
 
 		cmp.setup.cmdline(":", {
-			mapping = cmp.mapping.preset.cmdline(),
 			sources = cmp.config.sources({
 				{ name = "path" },
 				{ name = "cmdline" },
