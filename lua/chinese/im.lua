@@ -1,7 +1,7 @@
 local M = {}
 local system = vim.uv.os_uname().sysname
 local sshtty = vim.env.SSH_TTY
-local tex = require("latex.conditions.luasnip")
+local tex = require("latex_snip.conditions.luasnip")
 if sshtty then
 	return
 end
