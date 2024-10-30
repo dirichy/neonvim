@@ -22,6 +22,10 @@ return {
 		opts = {},
 		config = true,
 	},
+	{
+		"lervag/vimtex",
+		lazy = false,
+	},
 	-- {
 	--   "bamonroe/rnoweb-nvim",
 	--   lazy=false,
