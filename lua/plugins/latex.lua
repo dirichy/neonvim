@@ -1,17 +1,31 @@
 return {
 	{
-		"dirichy/latex.nvim",
-		ft = { "tex", "markdown", "norg" },
+		vim.fn.isdirectory("~/nvimtex.nvim/") and "~/nvimtex.nvim" or "dirichy/nvimtex.nvim",
+		ft = { "tex", "latex" },
 		keys = {
+			{
+				"<leader>tv",
+				function()
+					require("nvimtex.view.zathura")()
+				end,
+				desc = "Compile LaTeX File",
+			},
 			{
 				"<leader>tb",
 				function()
 					vim.cmd.write()
-					require("latex.compile.arara")()
+					require("nvimtex.compile.arara")()
 				end,
 				desc = "Compile LaTeX File",
 			},
 		},
+		config = function()
+			require("nvimtex").setup()
+		end,
+	},
+	{
+		"dirichy/latex.nvim",
+		ft = { "tex", "markdown", "norg" },
 		config = function()
 			require("latex_snip").setup()
 		end,
