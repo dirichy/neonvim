@@ -1,6 +1,7 @@
 return {
 	{
-		vim.fn.isdirectory("~/nvimtex.nvim/") and "~/nvimtex.nvim" or "dirichy/nvimtex.nvim",
+		not vim.fn.isdirectory("~/nvimtex.nvim/") and "dirichy/nvimtex.nvim",
+		dir = vim.fn.isdirectory("~/nvimtex.nvim/") and "~/nvimtex.nvim",
 		ft = { "tex", "latex" },
 		keys = {
 			{
