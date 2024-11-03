@@ -172,11 +172,6 @@ return {
 				desc = "Select Yanky History",
 			},
 		},
-		--
-		-- require("yanky").setup({
-		--   picker = {
-		--   }
-		-- })
 		opts = function()
 			local utils = require("yanky.utils")
 			local mapping = require("yanky.telescope.mapping")

@@ -13,6 +13,7 @@ end
 function M.langcond()
 	return vim.g.language == "zh"
 end
+
 function M.cursorcond()
 	if vim.bo.filetype == "tex" or vim.bo.filetype == "latex" then
 		return tex.in_text()
@@ -21,6 +22,9 @@ function M.cursorcond()
 	end
 end
 function M.refersh()
+	if not vim.g.imselect_enabled then
+		return
+	end
 	if M.modecond() and M.langcond() and M.cursorcond() then
 		M.enableim()
 	else
@@ -40,11 +44,14 @@ elseif system == "Darwin" then
 		zh = "im.rime.inputmethod.Squirrel.Hans",
 		en = "com.apple.keylayout.ABC",
 	}
+	local change_command = vim.fn.executable("issw") and "issw -V "
+		or vim.fn.executable("macism") and "macism "
+		or error("No tool to change input method, install issw or macism!")
 	M.enableim = function()
-		vim.cmd("silent !macism " .. input_source["zh"])
+		vim.cmd("silent !" .. change_command .. input_source["zh"])
 	end
 	M.disableim = function()
-		vim.cmd("silent !macism " .. input_source["en"])
+		vim.cmd("silent !" .. change_command .. input_source["en"])
 	end
 else
 	error("Imselect only support linux and mac now.")
