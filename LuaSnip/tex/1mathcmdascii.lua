@@ -55,6 +55,7 @@ end
 local cmds = require("latex_snip.snip.mathsnip")
 local cmd2char = cmds.cmd2char
 local cmd3char = cmds.cmd3char
+cmd3char.asy = "\\asymp"
 local cmd4char = cmds.cmd4char
 local M = {
 	-- add cmd3char
