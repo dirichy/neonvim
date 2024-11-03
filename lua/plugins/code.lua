@@ -55,7 +55,7 @@ return {
 			require("conform").setup({
 				formatters = { ["tex-fmt"] = {
 					command = "tex-fmt",
-					args = { "--stdin" },
+					args = { "--stdin", "--keep" },
 				} },
 				formatters_by_ft = {
 					lua = { "stylua" },
