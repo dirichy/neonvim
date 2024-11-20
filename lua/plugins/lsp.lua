@@ -210,6 +210,7 @@ return {
 			library = {
 				{ path = "~/Documents/.lib/LuaTeX_Lua-API/library/", words = { "tex" } },
 				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				{ path = "~/Documents/.lib/hammerspoon/", words = { "hs" } },
 			},
 			enabled = function(root_dir)
 				return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
