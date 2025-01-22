@@ -55,28 +55,37 @@ map("n", "<leader>sI", "<cmd>InspectTree<cr>", { desc = "Show InspectTree" })
 map("n", "<leader>-", "<c-w>s", { desc = "Split down" })
 map("n", "<leader>|", "<c-w>v", { desc = "Split right" })
 map("n", "<leader>tt", function()
-	local api = vim.api
-
-	local bnr = vim.fn.bufnr("%")
-	local ns_id = api.nvim_create_namespace("demo")
-
-	local line_num = 5
-	local col_num = 5
-
-	local opts = {
-		end_line = 10,
-		id = 1,
-		-- virt_text = { { [[sss  aaa]], "IncSearch" } },
-		-- virt_text_pos = 'eol',
-		virt_lines = {
-			{ { "    ||||", "IncSearch" } },
-			{ { "    || |", "IncSearch" } },
-			{ { "    |  |", "IncSearch" } },
-		},
-		virt_text_win_col = 10,
-	}
-
-	local mark_id = api.nvim_buf_set_extmark(bnr, ns_id, line_num, col_num, opts)
+	local pipe = vim.uv.new_pipe(false)
+	vim.cmd("!rm /tmp/vimmode")
+	pipe:bind("/tmp/vimmode")
+	pipe:listen(2, function()
+		local client = vim.uv.new_pipe(false)
+		pipe:accept(client)
+		client:write(vim.api.nvim_get_mode().mode .. "\n", function(err)
+			print(err)
+		end)
+		client:close()
+	end)
+	vim.api.nvim_create_autocmd("VimLeave", {
+		callback = function()
+			pipe:close()
+		end,
+	})
+end)
+map("n", "<leader>tr", function()
+	local pipe = vim.uv.new_pipe(false)
+	pipe:connect("/tmp/vimmode", function(err)
+		assert(not err, err)
+		pipe:write("test")
+		pipe:read_start(function(err, chunk)
+			assert(not err, err)
+			if chunk then
+				print("Received from server:", chunk)
+			else
+				print("Server closed connection")
+			end
+		end)
+	end)
 end)
 map("n", "<Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
 map("n", "<Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })

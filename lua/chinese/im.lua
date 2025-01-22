@@ -6,12 +6,14 @@ if sshtty then
 	return
 end
 
+vim.g.imselect_enabled = 1
+
 function M.modecond()
 	return vim.api.nvim_get_mode().mode == "i" or vim.fn.getcmdtype() == "/" or vim.fn.getcmdtype() == "?"
 end
 
 function M.langcond()
-	return vim.g.language == "zh"
+	return true
 end
 
 function M.cursorcond()
@@ -40,22 +42,54 @@ if system == "Linux" then
 		vim.cmd("silent !fcitx-remote -c")
 	end
 elseif system == "Darwin" then
-	local input_source = {
-		zh = "im.rime.inputmethod.Squirrel.Hans",
-		en = "com.apple.keylayout.ABC",
-	}
-	local change_command = vim.fn.executable("issw") and "issw -V "
-		or vim.fn.executable("macism") and "macism "
-		or error("No tool to change input method, install issw or macism!")
+	-- local input_source = {
+	-- 	zh = "im.rime.inputmethod.Squirrel.Hans",
+	-- 	en = "com.apple.keylayout.ABC",
+	-- }
+	-- local change_command = vim.fn.executable("issw") == 1 and "issw -V "
+	-- 	or vim.fn.executable("macism") == 1 and "macism "
+	-- 	or error("No tool to change input method, install issw or macism!")
+	-- M.getcurrent = function()
+	-- 	local handle = io.popen(change_command)
+	-- 	local output
+	-- 	if handle then
+	-- 		output = handle:read("*a")
+	-- 		handle:close()
+	-- 	end
+	-- 	return output
+	-- end
+	-- local stored_im = input_source["en"]
+	-- local enabled = false
+	-- local i = 0
+	-- M.enableim = function()
+	-- 	if enabled then
+	-- 		return
+	-- 	end
+	-- 	vim.cmd("silent !" .. change_command .. stored_im)
+	-- 	enabled = true
+	-- end
+	-- M.disableim = function()
+	-- 	if not enabled then
+	-- 		return
+	-- 	end
+	-- 	stored_im = M.getcurrent()
+	-- 	vim.cmd("silent !" .. change_command .. input_source["en"])
+	-- 	enabled = false
+	-- end
 	M.enableim = function()
-		vim.cmd("silent !" .. change_command .. input_source["zh"])
+		vim.cmd(
+			[[silent !hs -c 'hs.eventtap.keyStroke({"shift","ctrl","alt"},"9",nil,hs.application.applicationForBundleID("im.rime.inputmethod.Squirrel"))']]
+		)
 	end
 	M.disableim = function()
-		vim.cmd("silent !" .. change_command .. input_source["en"])
+		vim.cmd(
+			[[silent !hs -c 'hs.eventtap.keyStroke({"shift","ctrl","alt"},"0",nil,hs.application.applicationForBundleID("im.rime.inputmethod.Squirrel"))']]
+		)
 	end
 else
 	error("Imselect only support linux and mac now.")
 end
+
 vim.api.nvim_create_autocmd({ "ModeChanged", "CursorMovedI" }, {
 	callback = M.refersh,
 })

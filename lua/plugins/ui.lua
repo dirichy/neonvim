@@ -131,216 +131,98 @@ return {
 		end,
 	},
 	-- { "echasnovski/mini.indentscope", version = false, config = true },
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		dependencies = {
-			"TheGLander/indent-rainbowline.nvim",
-		},
-		event = "VeryLazy",
-		main = "ibl",
-		opts = {
-			indent = {
-				char = "│",
-				tab_char = "│",
-			},
-			scope = { show_start = false, show_end = false },
-			exclude = {
-				filetypes = {
-					"help",
-					"alpha",
-					"dashboard",
-					"neo-tree",
-					"Trouble",
-					"trouble",
-					"lazy",
-					"mason",
-					"notify",
-					"toggleterm",
-					"lazyterm",
-				},
-			},
-		},
-		config = function(_, opts)
-			require("ibl").setup(require("indent-rainbowline").make_opts(opts, {
-				color_transparency = 0.3,
-				colors = { 0xff0000, 0x00ff00, 0x8b00ff, 0xffff00, 0x0000ff, 0xffa500, 0x007fff },
-			}))
-		end,
-	},
+	-- {
+	-- 	"lukas-reineke/indent-blankline.nvim",
+	-- 	-- dependencies = {
+	-- 	-- 	"TheGLander/indent-rainbowline.nvim",
+	-- 	-- },
+	-- 	event = "VeryLazy",
+	-- 	main = "ibl",
+	-- 	opts = {
+	-- 		indent = {
+	-- 			char = "│",
+	-- 			tab_char = "│",
+	-- 		},
+	-- 		scope = { show_start = false, show_end = false },
+	-- 		exclude = {
+	-- 			filetypes = {
+	-- 				"help",
+	-- 				"alpha",
+	-- 				"dashboard",
+	-- 				"neo-tree",
+	-- 				"Trouble",
+	-- 				"trouble",
+	-- 				"lazy",
+	-- 				"mason",
+	-- 				"notify",
+	-- 				"toggleterm",
+	-- 				"lazyterm",
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	config = function(_, opts)
+	-- 		require("ibl").setup(require("indent-rainbowline").make_opts(opts, {
+	-- 			color_transparency = 0.3,
+	-- 			colors = { 0xff0000, 0x00ff00, 0x8b00ff, 0xffff00, 0x0000ff, 0xffa500, 0x007fff },
+	-- 		}))
+	-- 	end,
+	-- },
 	{
 		"lewis6991/gitsigns.nvim",
 		event = "VeryLazy",
 		config = true,
 	},
-	{
-		"nvimdev/dashboard-nvim",
-		lazy = #vim.fn.argv() > 0, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
-		cmd = "Dashboard",
-		opts = function()
-			local logo = [[
-██╗      █████╗ ████████╗███████╗██╗  ██╗
-██║     ██╔══██╗╚══██╔══╝██╔════╝╚██╗██╔╝
-██║     ███████║   ██║   █████╗   ╚███╔╝
-██║     ██╔══██║   ██║   ██╔══╝   ██╔██╗
-███████╗██║  ██║   ██║   ███████╗██╔╝ ██╗
-╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-]]
-			--         [[
-			--    _         _       _____  U _____ u __  __  U _____ u ____              _____   U  ___ u   ____
-			--   |"|    U  /"\  u  |_ " _| \| ___"|/ \ \/"/  \| ___"|/|  _"\    ___     |_ " _|   \/"_ \/U |  _"\ u
-			-- U | | u   \/ _ \/     | |    |  _|"   /\  /\   |  _|" /| | | |  |_"_|      | |     | | | | \| |_) |/
-			--  \| |/__  / ___ \    /| |\   | |___  U /  \ u  | |___ U| |_| |\  | |      /| |\.-,_| |_| |  |  _ <
-			--   |_____|/_/   \_\  u |_|U   |_____|  /_/\_\   |_____| |____/ uU/| |\u   u |_|U \_)-\___/   |_| \_\
-			--   //  \\  \\    >>  _// \\_  <<   >>,-,>> \\_  <<   >>  |||_.-,_|___|_,-._// \\_     \\     //   \\_
-			--  (_")("_)(__)  (__)(__) (__)(__) (__)\_)  (__)(__) (__)(__)_)\_)-' '-(_/(__) (__)   (__)   (__)  (__)
-			-- ]]
-
-			-- logo = string.rep("\n", 8) .. logo .. "\n\n"
-
-			-- vim.g.dashboard_preview_command = 'cat'
-			-- vim.g.dashboard_preview_pipeline = 'lolcat'
-			-- vim.g.dashboard_preview_file = path to logo file like
-			-- ~/.config/nvim/neovim.cat
-			-- vim.g.dashboard_preview_file_height = 12
-			-- vim.g.dashboard_preview_file_width = 80
-			local opts = {
-				theme = "doom",
-				disable_move = true,
-				hide = {
-					-- this is taken care of by lualine
-					-- enabling this messes up the actual laststatus setting after loading a file
-					statusline = false,
-				},
-				-- preview = {
-				-- 	command = "lolcat",
-				-- 	file_path = "~/.config/nvim/resources/dashboard.txt",
-				-- 	file_height = 8,
-				-- 	file_width = 51,
-				-- },
-				config = {
-					disable_move = true,
-					week_header = {
-						enable = true,
-					},
-					-- header = vim.split(logo, "\n"),
-					center = {
-						{
-							action = 'lua require("telescope.builtin").find_files()',
-							desc = " Find File",
-							icon = " ",
-							key = "f",
-						},
-						{ action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
-						{
-							action = 'lua require("telescope.builtin").oldfiles()',
-							desc = " Recent Files",
-							icon = " ",
-							key = "r",
-						},
-						{
-							action = 'lua require("telescope.builtin").live_grep()',
-							desc = " Live Grip",
-							icon = " ",
-							key = "g",
-						},
-						{
-							action = 'lua require("telescope.builtin").find_files({cwd="~/.config/nvim"})',
-							desc = " Config",
-							icon = " ",
-							key = "c",
-						},
-						{
-							action = 'lua require("persistence").load()',
-							desc = " Restore Session",
-							icon = " ",
-							key = "s",
-						},
-						{ action = "Leet", desc = " Leet Code", icon = "󰪚 ", key = "e" },
-						-- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
-						{ action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
-						{ action = "qa", desc = " Quit", icon = " ", key = "q" },
-					},
-					footer = function()
-						local stats = require("lazy").stats()
-						local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-						return {
-							"⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
-						}
-					end,
-				},
-			}
-
-			for _, button in ipairs(opts.config.center) do
-				button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
-				button.key_format = "  %s"
-			end
-
-			-- open dashboard after closing lazy
-			if vim.o.filetype == "lazy" then
-				vim.api.nvim_create_autocmd("WinClosed", {
-					pattern = tostring(vim.api.nvim_get_current_win()),
-					once = true,
-					callback = function()
-						vim.schedule(function()
-							vim.api.nvim_exec_autocmds("UIEnter", { group = "dashboard" })
-						end)
-					end,
-				})
-			end
-			return opts
-		end,
-	},
-	{
-		"rcarriga/nvim-notify",
-		lazy = true,
-		-- keys = {
-		--   "<leader>un",
-		--   function()
-		--     require("notify").dismiss({ silent = true, pending = true })
-		--   end,
-		--   desc = "Dismiss All Notifications",
-		-- },
-		opts = {
-			background_colour = "NotifyBackground",
-			max_height = function()
-				return math.floor(vim.o.lines * 0.75)
-			end,
-			max_width = function()
-				return math.floor(vim.o.columns * 0.75)
-			end,
-			on_open = function(win)
-				vim.api.nvim_win_set_config(win, { zindex = 100 })
-			end,
-			fps = 30,
-			icons = {
-				DEBUG = "",
-				ERROR = "",
-				INFO = "",
-				TRACE = "✎",
-				WARN = "",
-			},
-			level = 2,
-			minimum_width = 50,
-			render = "compact",
-			stages = "static",
-			time_formats = {
-				notification = "%T",
-				notification_history = "%FT%T",
-			},
-			timeout = 3000,
-			top_down = true,
-		},
-		init = function()
-			-- when noice is not enabled, install notify on VeryLazy
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "VeryLazy",
-				callback = function()
-					vim.notify = require("notify")
-				end,
-				desc = "Use nvim-Notify as default",
-			})
-		end,
-	},
+	-- {
+	-- 	"rcarriga/nvim-notify",
+	-- 	lazy = true,
+	-- 	-- keys = {
+	-- 	--   "<leader>un",
+	-- 	--   function()
+	-- 	--     require("notify").dismiss({ silent = true, pending = true })
+	-- 	--   end,
+	-- 	--   desc = "Dismiss All Notifications",
+	-- 	-- },
+	-- 	opts = {
+	-- 		background_colour = "NotifyBackground",
+	-- 		max_height = function()
+	-- 			return math.floor(vim.o.lines * 0.75)
+	-- 		end,
+	-- 		max_width = function()
+	-- 			return math.floor(vim.o.columns * 0.75)
+	-- 		end,
+	-- 		on_open = function(win)
+	-- 			vim.api.nvim_win_set_config(win, { zindex = 100 })
+	-- 		end,
+	-- 		fps = 30,
+	-- 		icons = {
+	-- 			DEBUG = "",
+	-- 			ERROR = "",
+	-- 			INFO = "",
+	-- 			TRACE = "✎",
+	-- 			WARN = "",
+	-- 		},
+	-- 		level = 2,
+	-- 		minimum_width = 50,
+	-- 		render = "compact",
+	-- 		stages = "static",
+	-- 		time_formats = {
+	-- 			notification = "%T",
+	-- 			notification_history = "%FT%T",
+	-- 		},
+	-- 		timeout = 3000,
+	-- 		top_down = true,
+	-- 	},
+	-- 	init = function()
+	-- 		-- when noice is not enabled, install notify on VeryLazy
+	-- 		vim.api.nvim_create_autocmd("User", {
+	-- 			pattern = "VeryLazy",
+	-- 			callback = function()
+	-- 				vim.notify = require("notify")
+	-- 			end,
+	-- 			desc = "Use nvim-Notify as default",
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"folke/noice.nvim",
 		event = "VeryLazy",

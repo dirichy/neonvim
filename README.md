@@ -1,1 +1,0 @@
-# NeovimZero2Hero

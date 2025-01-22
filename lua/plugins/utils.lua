@@ -1,5 +1,417 @@
 return {
 	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		keys = {
+			{
+				"<leader>og",
+				function()
+					require("snacks").lazygit()
+				end,
+				desc = "Open LazyGit",
+			},
+			{
+				"<leader>th",
+				function()
+					require("snacks").notifier.show_history()
+				end,
+				desc = "Notify History",
+			},
+			{
+				"<leader>ps",
+				function()
+					Snacks.profiler.scratch()
+				end,
+				desc = "Profiler Scratch Bufer",
+			},
+		},
+		config = function()
+			local Snacks = require("snacks")
+			Snacks.setup({
+				dashboard = {
+					width = 60,
+					row = nil, -- dashboard position. nil for center
+					col = nil, -- dashboard position. nil for center
+					pane_gap = 4, -- empty columns between vertical panes
+					autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
+					-- These settings are used by some built-in sections
+					preset = {
+						-- Defaults to a picker that supports `fzf-lua`, `telescope.nvim` and `mini.pick`
+						---@type fun(cmd:string, opts:table)|nil
+						pick = nil,
+						-- Used by the `keys` section to show keymaps.
+						-- Set your custom keymaps here.
+						-- When using a function, the `items` argument are the default keymaps.
+						---@type snacks.dashboard.Item[]
+						keys = {
+
+							{
+								icon = " ",
+								key = "f",
+								desc = "Find File",
+								action = ":lua Snacks.dashboard.pick('files')",
+							},
+							{ icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+							{
+								icon = " ",
+								key = "g",
+								desc = "Find Text",
+								action = ":lua Snacks.dashboard.pick('live_grep')",
+							},
+							{
+								icon = " ",
+								key = "r",
+								desc = "Recent Files",
+								action = ":lua Snacks.dashboard.pick('oldfiles')",
+							},
+							{
+								icon = " ",
+								key = "c",
+								desc = "Config",
+								action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+							},
+							{ icon = " ", key = "s", desc = "Restore Session", section = "session" },
+							{ action = ":Leet", desc = "Leet Code", icon = "󰪚", key = "e" },
+							{
+								icon = "󰒲 ",
+								key = "l",
+								desc = "Lazy",
+								action = ":Lazy",
+								enabled = package.loaded.lazy ~= nil,
+							},
+							{ icon = " ", key = "q", desc = "Quit", action = ":qa" },
+						},
+						-- Used by the `header` section
+						header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+					},
+					-- item field formatters
+					formats = {
+						icon = function(item)
+							if item.file and item.icon == "file" then
+								local filename = item.file:gsub(".*/([^/]*)", "%1")
+								local icon, hl = require("nvim-web-devicons").get_icon(filename)
+								return { icon, width = 2, hl = hl }
+							elseif item.icon == "directory" then
+								return { " ", width = 2, hl = "Directory" }
+							end
+							return { item.icon, width = 2, hl = "icon" }
+						end,
+						footer = { "%s", align = "center" },
+						header = { "%s", align = "center" },
+						file = function(item, ctx)
+							local fname = vim.fn.fnamemodify(item.file, ":~")
+							fname = ctx.width and #fname > ctx.width and vim.fn.pathshorten(fname) or fname
+							if #fname > ctx.width then
+								local dir = vim.fn.fnamemodify(fname, ":h")
+								local file = vim.fn.fnamemodify(fname, ":t")
+								if dir and file then
+									file = file:sub(-(ctx.width - #dir - 2))
+									fname = dir .. "/…" .. file
+								end
+							end
+							local dir, file = fname:match("^(.*)/(.+)$")
+							return dir and { { dir .. "/", hl = "dir" }, { file, hl = "file" } }
+								or { { fname, hl = "file" } }
+						end,
+					},
+					sections = {
+						{ section = "header" },
+						{ icon = " ", title = "Keymaps", section = "keys", indent = 2, padding = 1 },
+						{ icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+						{ icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+						{ section = "startup" },
+					},
+				},
+				bigfile = {
+					enabled = true,
+					notify = true, -- show notification when big file detected
+					size = 1.5 * 1024 * 1024, -- 1.5MB
+					-- Enable or disable features when big file detected
+					---@param ctx {buf: number, ft:string}
+					setup = function(ctx)
+						vim.g.latex_concealer_disabled = true
+						vim.cmd([[NoMatchParen]])
+						require("snacks").util.wo(0, { foldmethod = "manual", statuscolumn = "", conceallevel = 0 })
+						vim.b.minianimate_disable = true
+						vim.schedule(function()
+							vim.bo[ctx.buf].syntax = ctx.ft
+						end)
+					end,
+				},
+				notifier = { enabled = true },
+				quickfile = { enabled = true, exclude = { "latex", "tex" } },
+				statuscolumn = { enabled = true },
+				words = { enabled = true },
+				blame_line = {
+					enabled = true,
+					width = 0.6,
+					height = 0.6,
+					border = "rounded",
+					title = " Git Blame ",
+					title_pos = "center",
+					ft = "git",
+				},
+				---@class snacks.indent.Config
+				---@field enabled? boolean
+				indent = {
+					indent = {
+						priority = 1,
+						enabled = true, -- enable indent guides
+						char = "│",
+						only_scope = false, -- only show indent guides of the scope
+						only_current = false, -- only show indent guides in the current window
+						-- can be a list of hl groups to cycle through
+						hl = {
+							"SnacksIndent1",
+							"SnacksIndent2",
+							"SnacksIndent3",
+							"SnacksIndent4",
+							"SnacksIndent5",
+							"SnacksIndent6",
+							"SnacksIndent7",
+							"SnacksIndent8",
+						},
+					},
+					-- animate scopes. Enabled by default for Neovim >= 0.10
+					-- Works on older versions but has to trigger redraws during animation.
+					---@class snacks.indent.animate: snacks.animate.Config
+					---@field enabled? boolean
+					--- * out: animate outwards from the cursor
+					--- * up: animate upwards from the cursor
+					--- * down: animate downwards from the cursor
+					--- * up_down: animate up or down based on the cursor position
+					---@field style? "out"|"up_down"|"down"|"up"
+					animate = {
+						enabled = vim.fn.has("nvim-0.10") == 1,
+						style = "out",
+						easing = "linear",
+						duration = {
+							step = 20, -- ms per step
+							total = 500, -- maximum duration
+						},
+					},
+					scope = {
+						enabled = true, -- enable highlighting the current scope
+						priority = 200,
+						char = "│",
+						underline = false, -- underline the start of the scope
+						only_current = false, -- only show scope in the current window
+						hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+					},
+					chunk = {
+						-- when enabled, scopes will be rendered as chunks, except for the
+						-- top-level scope which will be rendered as a scope.
+						enabled = false,
+						-- only show chunk scopes in the current window
+						only_current = false,
+						priority = 200,
+						hl = "SnacksIndentChunk", ---@type string|string[] hl group for chunk scopes
+						char = {
+							corner_top = "┌",
+							corner_bottom = "└",
+							-- corner_top = "╭",
+							-- corner_bottom = "╰",
+							horizontal = "─",
+							vertical = "│",
+							arrow = ">",
+						},
+					},
+					-- filter for buffers to enable indent guides
+					filter = function(buf)
+						return vim.g.snacks_indent ~= false
+							and vim.b[buf].snacks_indent ~= false
+							and vim.bo[buf].buftype == ""
+					end,
+				},
+				input = {},
+				styles = {
+					input = {
+						backdrop = false,
+						position = "float",
+						border = "rounded",
+						title_pos = "center",
+						height = 1,
+						width = 60,
+						relative = "editor",
+						noautocmd = true,
+						row = 2,
+						-- relative = "cursor",
+						-- row = -3,
+						-- col = 0,
+						wo = {
+							winhighlight = "NormalFloat:SnacksInputNormal,FloatBorder:SnacksInputBorder,FloatTitle:SnacksInputTitle",
+							cursorline = false,
+						},
+						bo = {
+							filetype = "snacks_input",
+							buftype = "prompt",
+						},
+						--- buffer local variables
+						b = {
+							completion = false, -- disable blink completions in input
+						},
+						keys = {
+							n_esc = { "<esc>", { "cmp_close", "cancel" }, mode = "n", expr = true },
+							i_esc = { "<esc>", { "cmp_close", "stopinsert" }, mode = "i", expr = true },
+							i_cr = { "<cr>", { "cmp_accept", "confirm" }, mode = "i", expr = true },
+							i_tab = { "<tab>", { "cmp_select_next", "cmp" }, mode = "i", expr = true },
+							i_ctrl_w = { "<c-w>", "<c-s-w>", mode = "i", expr = true },
+							i_up = { "<up>", { "hist_up" }, mode = { "i", "n" } },
+							i_down = { "<down>", { "hist_down" }, mode = { "i", "n" } },
+							q = "cancel",
+						},
+					},
+				},
+				scroll = {
+					animate = {
+						duration = { step = 15, total = 250 },
+						easing = "linear",
+					},
+					-- faster animation when repeating scroll after delay
+					animate_repeat = {
+						delay = 100, -- delay in ms before using the repeat animation
+						duration = { step = 5, total = 50 },
+						easing = "linear",
+					},
+					-- what buffers to animate
+					filter = function(buf)
+						return vim.g.snacks_scroll ~= false
+							and vim.b[buf].snacks_scroll ~= false
+							and vim.bo[buf].buftype ~= "terminal"
+					end,
+				},
+			})
+			Snacks.toggle.profiler():map("<leader>pp")
+			-- Toggle the profiler highlights
+			Snacks.toggle.profiler_highlights():map("<leader>ph")
+		end,
+	},
+	-- 	{
+	-- 		"nvimdev/dashboard-nvim",
+	-- 		lazy = #vim.fn.argv() > 0, -- As https://github.com/nvimdev/dashboard-nvim/pull/450, dashboard-nvim shouldn't be lazy-loaded to properly handle stdin.
+	-- 		cmd = "Dashboard",
+	-- 		opts = function()
+	-- 			local logo = [[
+	-- ██╗      █████╗ ████████╗███████╗██╗  ██╗
+	-- ██║     ██╔══██╗╚══██╔══╝██╔════╝╚██╗██╔╝
+	-- ██║     ███████║   ██║   █████╗   ╚███╔╝
+	-- ██║     ██╔══██║   ██║   ██╔══╝   ██╔██╗
+	-- ███████╗██║  ██║   ██║   ███████╗██╔╝ ██╗
+	-- ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+	-- ]]
+	-- 			--         [[
+	-- 			--    _         _       _____  U _____ u __  __  U _____ u ____              _____   U  ___ u   ____
+	-- 			--   |"|    U  /"\  u  |_ " _| \| ___"|/ \ \/"/  \| ___"|/|  _"\    ___     |_ " _|   \/"_ \/U |  _"\ u
+	-- 			-- U | | u   \/ _ \/     | |    |  _|"   /\  /\   |  _|" /| | | |  |_"_|      | |     | | | | \| |_) |/
+	-- 			--  \| |/__  / ___ \    /| |\   | |___  U /  \ u  | |___ U| |_| |\  | |      /| |\.-,_| |_| |  |  _ <
+	-- 			--   |_____|/_/   \_\  u |_|U   |_____|  /_/\_\   |_____| |____/ uU/| |\u   u |_|U \_)-\___/   |_| \_\
+	-- 			--   //  \\  \\    >>  _// \\_  <<   >>,-,>> \\_  <<   >>  |||_.-,_|___|_,-._// \\_     \\     //   \\_
+	-- 			--  (_")("_)(__)  (__)(__) (__)(__) (__)\_)  (__)(__) (__)(__)_)\_)-' '-(_/(__) (__)   (__)   (__)  (__)
+	-- 			-- ]]
+	--
+	-- 			-- logo = string.rep("\n", 8) .. logo .. "\n\n"
+	--
+	-- 			-- vim.g.dashboard_preview_command = 'cat'
+	-- 			-- vim.g.dashboard_preview_pipeline = 'lolcat'
+	-- 			-- vim.g.dashboard_preview_file = path to logo file like
+	-- 			-- ~/.config/nvim/neovim.cat
+	-- 			-- vim.g.dashboard_preview_file_height = 12
+	-- 			-- vim.g.dashboard_preview_file_width = 80
+	-- 			local opts = {
+	-- 				theme = "doom",
+	-- 				disable_move = true,
+	-- 				hide = {
+	-- 					-- this is taken care of by lualine
+	-- 					-- enabling this messes up the actual laststatus setting after loading a file
+	-- 					statusline = false,
+	-- 				},
+	-- 				-- preview = {
+	-- 				-- 	command = "lolcat",
+	-- 				-- 	file_path = "~/.config/nvim/resources/dashboard.txt",
+	-- 				-- 	file_height = 8,
+	-- 				-- 	file_width = 51,
+	-- 				-- },
+	-- 				config = {
+	-- 					disable_move = true,
+	-- 					week_header = {
+	-- 						enable = true,
+	-- 					},
+	-- 					-- header = vim.split(logo, "\n"),
+	-- 					center = {
+	-- 						{
+	-- 							action = 'lua require("telescope.builtin").find_files()',
+	-- 							desc = " Find File",
+	-- 							icon = " ",
+	-- 							key = "f",
+	-- 						},
+	-- 						{ action = "ene | startinsert", desc = " New File", icon = " ", key = "n" },
+	-- 						{
+	-- 							action = 'lua require("telescope.builtin").oldfiles()',
+	-- 							desc = " Recent Files",
+	-- 							icon = " ",
+	-- 							key = "r",
+	-- 						},
+	-- 						{
+	-- 							action = 'lua require("telescope.builtin").live_grep()',
+	-- 							desc = " Live Grip",
+	-- 							icon = " ",
+	-- 							key = "g",
+	-- 						},
+	-- 						{
+	-- 							action = 'lua require("telescope.builtin").find_files({cwd="~/.config/nvim"})',
+	-- 							desc = " Config",
+	-- 							icon = " ",
+	-- 							key = "c",
+	-- 						},
+	-- 						{
+	-- 							action = 'lua require("persistence").load()',
+	-- 							desc = " Restore Session",
+	-- 							icon = " ",
+	-- 							key = "s",
+	-- 						},
+	-- 						{ action = "Leet", desc = " Leet Code", icon = "󰪚 ", key = "e" },
+	-- 						-- { action = "LazyExtras", desc = " Lazy Extras", icon = " ", key = "x" },
+	-- 						{ action = "Lazy", desc = " Lazy", icon = "󰒲 ", key = "l" },
+	-- 						{ action = "qa", desc = " Quit", icon = " ", key = "q" },
+	-- 					},
+	-- 					footer = function()
+	-- 						local stats = require("lazy").stats()
+	-- 						local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+	-- 						return {
+	-- 							"⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
+	-- 						}
+	-- 					end,
+	-- 				},
+	-- 			}
+	--
+	-- 			for _, button in ipairs(opts.config.center) do
+	-- 				button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
+	-- 				button.key_format = "  %s"
+	-- 			end
+	--
+	-- 			-- open dashboard after closing lazy
+	-- 			if vim.o.filetype == "lazy" then
+	-- 				vim.api.nvim_create_autocmd("WinClosed", {
+	-- 					pattern = tostring(vim.api.nvim_get_current_win()),
+	-- 					once = true,
+	-- 					callback = function()
+	-- 						vim.schedule(function()
+	-- 							vim.api.nvim_exec_autocmds("UIEnter", { group = "dashboard" })
+	-- 						end)
+	-- 					end,
+	-- 				})
+	-- 			end
+	-- 			return opts
+	-- 		end,
+	-- 	},
+	{
 		"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
 		lazy = true,
 		config = function()
@@ -427,9 +839,16 @@ return {
 		end,
 	},
 	{
-		"echasnovski/mini.comment",
-		event = "VeryLazy",
-		config = true,
+		"numToStr/Comment.nvim",
+		keys = {
+			{ "gc" },
+			{ "gb" },
+		},
+		config = function()
+			require("Comment").setup()
+			local ft = require("Comment.ft")
+			ft.tex = { "%%s", "\\iffalse\n%s\n\\fi" }
+		end,
 	},
 	{
 		"s1n7ax/nvim-window-picker",
@@ -526,25 +945,25 @@ return {
 		lazy = true,
 		config = false,
 	},
-	{
-		"LunarVim/bigfile.nvim",
-		lazy = false,
-		config = function()
-			-- default config
-			require("bigfile").setup({
-				filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
-				pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
-				features = { -- features to disable
-					"indent_blankline",
-					"illuminate",
-					"lsp",
-					"treesitter",
-					"syntax",
-					"matchparen",
-					"vimopts",
-					"filetype",
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"LunarVim/bigfile.nvim",
+	-- 	lazy = false,
+	-- 	config = function()
+	-- 		-- default config
+	-- 		require("bigfile").setup({
+	-- 			filesize = 2, -- size of the file in MiB, the plugin round file sizes to the closest MiB
+	-- 			pattern = { "*" }, -- autocmd pattern or function see <### Overriding the detection of big files>
+	-- 			features = { -- features to disable
+	-- 				"indent_blankline",
+	-- 				"illuminate",
+	-- 				"lsp",
+	-- 				"treesitter",
+	-- 				"syntax",
+	-- 				"matchparen",
+	-- 				"vimopts",
+	-- 				"filetype",
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 }

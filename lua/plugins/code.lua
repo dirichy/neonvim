@@ -82,7 +82,28 @@ return {
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
 		config = function()
-			require("nvim-surround").setup({})
+			require("nvim-surround").setup({
+				surrounds = {
+					["b"] = {
+						add = function()
+							return { "\\{", "\\}" }
+						end,
+						find = "\\%b{}",
+						delete = "^(\\{)().-(\\})()$",
+					},
+					["B"] = {
+						add = function()
+							return { "\\left\\{", "\\right\\}" }
+						end,
+						find = "\\left\\%b{}",
+						delete = "^(\\left\\{)().-(\\right\\})()$",
+					},
+					["`"] = {
+						add = { "`", "'" },
+						find = "%b`'",
+					},
+				},
+			})
 		end,
 	},
 	{
@@ -93,7 +114,7 @@ return {
 				"<leader>uz",
 				function()
 					--HACK:Neotree will break ZenMode
-					if package.loaded["neo- tree"] then
+					if package.loaded["neo-tree"] then
 						vim.cmd.Neotree("close")
 					end
 					vim.cmd.ZenMode()

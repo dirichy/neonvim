@@ -21,6 +21,13 @@ return {
 			i(1, "module"),
 		})
 	),
+	s(
+		"lzayreq",
+		fmt('local {} = util.lazyreq("{}")', {
+			l(l._1:match("[^.]*$"):gsub("[^%a]+", "_"), 1),
+			i(1, "module"),
+		})
+	),
 	ls.parser.parse_snippet("lm", "local M = {}\n\n$1 \n\nreturn M"),
 	s(
 		{ trig = "csnip", snippetType = "autosnippet" },

@@ -1,7 +1,7 @@
 return {
 	{
-		not vim.fn.isdirectory("~/nvimtex.nvim/") and "dirichy/nvimtex.nvim",
-		dir = vim.fn.isdirectory("~/nvimtex.nvim/") and "~/nvimtex.nvim",
+		vim.fn.isdirectory("/Users/dirichy/nvimtex.nvim/") == 0 and "dirichy/nvimtex.nvim",
+		dir = vim.fn.isdirectory("/Users/dirichy/nvimtex.nvim/") == 1 and "/Users/dirichy/nvimtex.nvim",
 		ft = { "tex", "latex" },
 		keys = {
 			{
@@ -32,15 +32,16 @@ return {
 		end,
 	},
 	{
-		"dirichy/latex_concealer.nvim",
+		vim.fn.isdirectory("/Users/dirichy/latex_concealer.nvim/") == 0 and "dirichy/latex_concealer.nvim",
+		dir = vim.fn.isdirectory("/Users/dirichy/latex_concealer.nvim/") == 1 and "/Users/dirichy/latex_concealer.nvim",
 		ft = "tex",
 		opts = {},
 		config = true,
 	},
-	{
-		"lervag/vimtex",
-		lazy = false,
-	},
+	-- {
+	-- 	"lervag/vimtex",
+	-- 	lazy = false,
+	-- },
 	-- {
 	--   "bamonroe/rnoweb-nvim",
 	--   lazy=false,

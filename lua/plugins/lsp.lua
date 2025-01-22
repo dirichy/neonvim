@@ -26,6 +26,8 @@ return {
 		-- end,
 		config = function()
 			local servers = {
+				ltex = {},
+				texlab = {},
 				lua_ls = {},
 				pyright = {},
 				jsonls = {},
@@ -74,7 +76,7 @@ return {
 			})
 			require("lspsaga").setup()
 			require("mason").setup()
-			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			require("mason-lspconfig").setup({
 				ensure_installed = vim.tbl_keys(servers),
 			})
@@ -210,6 +212,7 @@ return {
 			library = {
 				{ path = "~/Documents/.lib/LuaTeX_Lua-API/library/", words = { "tex" } },
 				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				{ path = "~/.hammerspoon/Spoons/EmmyLua.spoon/annotations/", words = { "hs" } },
 			},
 			enabled = function(root_dir)
 				return vim.g.lazydev_enabled == nil and true or vim.g.lazydev_enabled
